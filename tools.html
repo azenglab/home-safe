@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>平安工具箱 · 全家平安守护中心</title>
+  <meta name="description" content="平安工具箱：紧急号码速查、保命技能卡（海姆立克/CPR/灭火器/火场逃生/车辆突发/走失应急）、家庭隐患自查清单。" />
+  <meta name="theme-color" content="#f59e0b" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="assets/site.css" />
+  <script src="assets/layout.js" data-page="tools"></script>
+  <style>
+    .tool-card { transition: transform 0.18s ease, box-shadow 0.18s ease; }
+    .tool-card:hover { transform: translateY(-2px); box-shadow: 0 12px 24px -10px rgba(15, 23, 42, 0.14); }
+    details.skill-card summary { cursor: pointer; list-style: none; }
+    details.skill-card summary::-webkit-details-marker { display: none; }
+    details.skill-card[open] .skill-arrow { transform: rotate(180deg); }
+    .skill-arrow { transition: transform 0.2s ease; }
+    .skill-step { counter-increment: step; }
+    .skill-step::before {
+      content: counter(step);
+      width: 1.5rem; height: 1.5rem;
+      display: inline-flex; align-items: center; justify-content: center;
+      margin-right: 0.5rem; flex-shrink: 0;
+      border-radius: 9999px;
+      background: #1e293b; color: #fff;
+      font-size: 11px; font-weight: 900;
+    }
+    .step-list { counter-reset: step; }
+  </style>
+</head>
+<body class="site min-h-[100dvh] flex flex-col overflow-x-hidden">
+
+  <div id="site-header"></div>
+
+  <main class="site-shell w-full flex-1 py-4 space-y-5">
+
+    <!-- 工具箱横幅 -->
+    <section id="toolsHero" class="bg-gradient-to-br from-[#4e7cc6] via-[#333d56] to-[#134e4a] rounded-2xl shadow-md px-5 py-5 text-white relative overflow-hidden sticky top-14 z-30">
+      <div class="flex items-center gap-3 relative z-10">
+        <span class="w-12 h-12 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center text-2xl shrink-0">🧰</span>
+        <div class="min-w-0">
+          <h1 class="text-xl sm:text-2xl font-black tracking-tight">平安工具箱</h1>
+          <p class="text-xs sm:text-sm text-slate-300 mt-0.5">急用时翻得到 · 平时用得上 · 关键时刻能救命</p>
+        </div>
+      </div>
+      <div class="flex gap-1.5 mt-3 flex-wrap relative z-10">
+        <button onclick="scrollToSec('sec-numbers')" class="px-2 py-0.5 rounded-full bg-white/10 border border-white/15 hover:bg-white/20 active:scale-95 transition-all text-[11px] font-bold text-amber-300 cursor-pointer">☎️ 8 个救命号码</button>
+        <button onclick="scrollToSec('sec-skills')" class="px-2 py-0.5 rounded-full bg-white/10 border border-white/15 hover:bg-white/20 active:scale-95 transition-all text-[11px] font-bold text-emerald-300 cursor-pointer">🩹 10 张保命技能卡</button>
+        <button onclick="scrollToSec('sec-checklist')" class="px-2 py-0.5 rounded-full bg-white/10 border border-white/15 hover:bg-white/20 active:scale-95 transition-all text-[11px] font-bold text-sky-300 cursor-pointer">🔍 12 项家庭隐患自查</button>
+        <button onclick="scrollToSec('sec-ice')" class="px-2 py-0.5 rounded-full bg-white/10 border border-white/15 hover:bg-white/20 active:scale-95 transition-all text-[11px] font-bold text-rose-300 cursor-pointer">📱 应急信息卡</button>
+        <button onclick="scrollToSec('sec-weather')" class="px-2 py-0.5 rounded-full bg-white/10 border border-white/15 hover:bg-white/20 active:scale-95 transition-all text-[11px] font-bold text-violet-300 cursor-pointer">🌈 气象预警速查</button>
+      </div>
+      <span class="absolute -right-4 -bottom-6 text-[88px] opacity-10 select-none pointer-events-none">🛡️</span>
+    </section>
+
+    <!-- 板块一：紧急号码速查 -->
+    <section id="sec-numbers" class="scroll-mt-60">
+      <h2 class="text-base font-black text-slate-900 mb-2 flex items-center gap-1.5">
+        <span>☎️</span> 紧急号码速查 <span class="text-[11px] font-bold text-slate-400">点击直接拨打</span>
+      </h2>
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+        <a href="tel:110" class="tool-card bg-white rounded-xl border border-sky-200 p-3 flex items-center gap-2.5">
+          <span class="w-9 h-9 rounded-lg bg-sky-100 flex items-center justify-center text-lg shrink-0">🚓</span>
+          <div class="min-w-0"><div class="text-base font-black text-sky-700 leading-none">110</div><div class="text-[11px] text-slate-500 mt-0.5">治安报警</div></div>
+        </a>
+        <a href="tel:119" class="tool-card bg-white rounded-xl border border-orange-200 p-3 flex items-center gap-2.5">
+          <span class="w-9 h-9 rounded-lg bg-orange-100 flex items-center justify-center text-lg shrink-0">🔥</span>
+          <div class="min-w-0"><div class="text-base font-black text-orange-700 leading-none">119</div><div class="text-[11px] text-slate-500 mt-0.5">火灾救援</div></div>
+        </a>
+        <a href="tel:120" class="tool-card bg-white rounded-xl border border-emerald-200 p-3 flex items-center gap-2.5">
+          <span class="w-9 h-9 rounded-lg bg-emerald-100 flex items-center justify-center text-lg shrink-0">🚑</span>
+          <div class="min-w-0"><div class="text-base font-black text-emerald-700 leading-none">120</div><div class="text-[11px] text-slate-500 mt-0.5">医疗急救</div></div>
+        </a>
+        <a href="tel:122" class="tool-card bg-white rounded-xl border border-amber-200 p-3 flex items-center gap-2.5">
+          <span class="w-9 h-9 rounded-lg bg-amber-100 flex items-center justify-center text-lg shrink-0">💥</span>
+          <div class="min-w-0"><div class="text-base font-black text-amber-700 leading-none">122</div><div class="text-[11px] text-slate-500 mt-0.5">交通事故</div></div>
+        </a>
+        <a href="tel:12122" class="tool-card bg-white rounded-xl border border-rose-200 p-3 flex items-center gap-2.5">
+          <span class="w-9 h-9 rounded-lg bg-rose-100 flex items-center justify-center text-lg shrink-0">🛣️</span>
+          <div class="min-w-0"><div class="text-base font-black text-rose-700 leading-none">12122</div><div class="text-[11px] text-slate-500 mt-0.5">高速救援</div></div>
+        </a>
+        <a href="tel:12395" class="tool-card bg-white rounded-xl border border-cyan-200 p-3 flex items-center gap-2.5">
+          <span class="w-9 h-9 rounded-lg bg-cyan-100 flex items-center justify-center text-lg shrink-0">⛵</span>
+          <div class="min-w-0"><div class="text-base font-black text-cyan-700 leading-none">12395</div><div class="text-[11px] text-slate-500 mt-0.5">水上遇险</div></div>
+        </a>
+        <a href="tel:96110" class="tool-card bg-white rounded-xl border border-violet-200 p-3 flex items-center gap-2.5">
+          <span class="w-9 h-9 rounded-lg bg-violet-100 flex items-center justify-center text-lg shrink-0">🛡️</span>
+          <div class="min-w-0"><div class="text-base font-black text-violet-700 leading-none">96110</div><div class="text-[11px] text-slate-500 mt-0.5">反诈专线</div></div>
+        </a>
+        <a href="tel:12345" class="tool-card bg-white rounded-xl border border-slate-200 p-3 flex items-center gap-2.5">
+          <span class="w-9 h-9 rounded-lg bg-slate-100 flex items-center justify-center text-lg shrink-0">🏛️</span>
+          <div class="min-w-0"><div class="text-base font-black text-slate-700 leading-none">12345</div><div class="text-[11px] text-slate-500 mt-0.5">市民热线</div></div>
+        </a>
+      </div>
+    </section>
+
+    <!-- 板块二：保命技能卡 -->
+    <section id="sec-skills" class="scroll-mt-60">
+      <h2 class="text-base font-black text-slate-900 mb-2 flex items-center gap-1.5">
+        <span>🩹</span> 保命技能卡 <span class="text-[11px] font-bold text-slate-400">点开即学 · 建议全家人都会</span>
+      </h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+
+        <details class="skill-card tool-card bg-white rounded-xl border border-red-200 overflow-hidden">
+          <summary class="p-3.5 flex items-center gap-2.5">
+            <span class="w-9 h-9 rounded-lg bg-red-100 flex items-center justify-center text-lg shrink-0">😮‍💨</span>
+            <div class="min-w-0 flex-1">
+              <div class="text-sm font-black text-slate-900">海姆立克急救法</div>
+              <div class="text-[11px] text-slate-500 mt-0.5">气道异物梗阻 · 剪刀石头布口诀</div>
+            </div>
+            <span class="skill-arrow text-slate-400 shrink-0">▾</span>
+          </summary>
+          <div class="px-3.5 pb-3.5 pt-0 border-t border-red-100/60">
+            <div class="bg-red-50 rounded-xl p-3 mt-3 text-xs leading-relaxed text-slate-700 space-y-1.5 step-list">
+              <div class="skill-step flex items-start"><span class="flex-1"><b>剪刀</b>：肚脐上方两横指定位。</span></div>
+              <div class="skill-step flex items-start"><span class="flex-1"><b>石头</b>：一手握拳，拳眼贴住定位点。</span></div>
+              <div class="skill-step flex items-start"><span class="flex-1"><b>布</b>：另一手包住拳头，快速向内向上冲击。</span></div>
+              <div class="skill-step flex items-start"><span class="flex-1">反复冲击直至异物排出；1 岁以下婴儿改用「拍背压胸法」。</span></div>
+            </div>
+            <p class="text-[11px] text-red-700 font-bold mt-2">⚠️ 梗阻时对方说不出话、咳不出声，请立即施救并同步拨打 120。</p>
+          </div>
+        </details>
+
+        <details class="skill-card tool-card bg-white rounded-xl border border-rose-200 overflow-hidden">
+          <summary class="p-3.5 flex items-center gap-2.5">
+            <span class="w-9 h-9 rounded-lg bg-rose-100 flex items-center justify-center text-lg shrink-0">❤️</span>
+            <div class="min-w-0 flex-1">
+              <div class="text-sm font-black text-slate-900">心肺复苏 CPR</div>
+              <div class="text-[11px] text-slate-500 mt-0.5">黄金 4 分钟 · 30:2 按压节奏</div>
+            </div>
+            <span class="skill-arrow text-slate-400 shrink-0">▾</span>
+          </summary>
+          <div class="px-3.5 pb-3.5 pt-0 border-t border-rose-100/60">
+            <div class="bg-rose-50 rounded-xl p-3 mt-3 text-xs leading-relaxed text-slate-700 space-y-1.5 step-list">
+              <div class="skill-step flex items-start"><span class="flex-1">拍肩呼喊，确认意识与呼吸（5-10 秒内判断）。</span></div>
+              <div class="skill-step flex items-start"><span class="flex-1">呼救并指定路人拨打 120、取 AED。</span></div>
+              <div class="skill-step flex items-start"><span class="flex-1">两乳头连线中点，双手交叠垂直按压 5-6cm 深。</span></div>
+              <div class="skill-step flex items-start"><span class="flex-1">频率 100-120 次/分，按压 30 次 + 人工呼吸 2 次循环。</span></div>
+              <div class="skill-step flex items-start"><span class="flex-1">AED 到场立即开机，按语音提示操作。</span></div>
+            </div>
+            <p class="text-[11px] text-rose-700 font-bold mt-2">💡 节奏参考儿歌《两只老虎》的节拍，不要中断超过 10 秒。</p>
+          </div>
+        </details>
+
+        <details class="skill-card tool-card bg-white rounded-xl border border-orange-200 overflow-hidden">
+          <summary class="p-3.5 flex items-center gap-2.5">
+            <span class="w-9 h-9 rounded-lg bg-orange-100 flex items-center justify-center text-lg shrink-0">🧯</span>
+            <div class="min-w-0 flex-1">
+              <div class="text-sm font-black text-slate-900">灭火器四字诀</div>
+              <div class="text-[11px] text-slate-500 mt-0.5">提 · 拔 · 握 · 压，只灭初起小火</div>
+            </div>
+            <span class="skill-arrow text-slate-400 shrink-0">▾</span>
+          </summary>
+          <div class="px-3.5 pb-3.5 pt-0 border-t border-orange-100/60">
+            <div class="bg-orange-50 rounded-xl p-3 mt-3 text-xs leading-relaxed text-slate-700 space-y-1.5 step-list">
+              <div class="skill-step flex items-start"><span class="flex-1"><b>提</b>：提起灭火器，上下颠倒摇晃几次。</span></div>
+              <div class="skill-step flex items-start"><span class="flex-1"><b>拔</b>：拔掉保险销。</span></div>
+              <div class="skill-step flex items-start"><span class="flex-1"><b>握</b>：握住喷管，对准火焰<b>根部</b>。</span></div>
+              <div class="skill-step flex items-start"><span class="flex-1"><b>压</b>：压下手柄，站在上风口 2-3 米处扫射。</span></div>
+            </div>
+            <p class="text-[11px] text-orange-700 font-bold mt-2">⚠️ 火势超过一人高、浓烟弥漫时，立刻放弃灭火，逃生要紧！</p>
+          </div>
+        </details>
+
+        <details class="skill-card tool-card bg-white rounded-xl border border-amber-200 overflow-hidden">
+          <summary class="p-3.5 flex items-center gap-2.5">
+            <span class="w-9 h-9 rounded-lg bg-amber-100 flex items-center justify-center text-lg shrink-0">🏃</span>
+            <div class="min-w-0 flex-1">
+              <div class="text-sm font-black text-slate-900">火场逃生要诀</div>
+              <div class="text-[11px] text-slate-500 mt-0.5">低姿 · 湿毛巾 · 不坐电梯</div>
+            </div>
+            <span class="skill-arrow text-slate-400 shrink-0">▾</span>
+          </summary>
+          <div class="px-3.5 pb-3.5 pt-0 border-t border-amber-100/60">
+            <div class="bg-amber-50 rounded-xl p-3 mt-3 text-xs leading-relaxed text-slate-700 space-y-1.5 step-list">
+              <div class="skill-step flex items-start"><span class="flex-1">先摸门把手：烫手说明门外有火，关门堵缝守阳台待援。</span></div>
+              <div class="skill-step flex items-start"><span class="flex-1">湿毛巾捂口鼻（叠 8 层），弯腰低姿沿墙快走。</span></div>
+              <div class="skill-step flex items-start"><span class="flex-1">走楼梯安全出口，<b>坚决不坐电梯</b>。</span></div>
+              <div class="skill-step flex items-start"><span class="flex-1">浓烟里贴地爬行，烟气比火更致命。</span></div>
+              <div class="skill-step flex items-start"><span class="flex-1">逃出后绝不返回取财物。</span></div>
+            </div>
+            <p class="text-[11px] text-amber-700 font-bold mt-2">💡 搬家入住第一天，先找到两条逃生路线。</p>
+          </div>
+        </details>
+
+        <details class="skill-card tool-card bg-white rounded-xl border border-sky-200 overflow-hidden">
+          <summary class="p-3.5 flex items-center gap-2.5">
+            <span class="w-9 h-9 rounded-lg bg-sky-100 flex items-center justify-center text-lg shrink-0">🚗</span>
+            <div class="min-w-0 flex-1">
+              <div class="text-sm font-black text-slate-900">车辆突发处置</div>
+              <div class="text-[11px] text-slate-500 mt-0.5">爆胎 / 刹车失灵 / 车辆落水</div>
+            </div>
+            <span class="skill-arrow text-slate-400 shrink-0">▾</span>
+          </summary>
+          <div class="px-3.5 pb-3.5 pt-0 border-t border-sky-100/60">
+            <div class="bg-sky-50 rounded-xl p-3 mt-3 text-xs leading-relaxed text-slate-700 space-y-2">
+              <div>
+                <div class="font-black text-sky-800 text-[11px] mb-0.5">🎬 高速爆胎</div>
+                <p>双手紧握方向盘<b>直线稳住</b>，松油门、忌急刹，点刹缓慢降速靠边，开双闪、放三角牌（150 米外）。</p>
+              </div>
+              <div>
+                <div class="font-black text-sky-800 text-[11px] mb-0.5">🎬 刹车失灵</div>
+                <p>抢挂低速挡利用发动机制动，缓拉手刹（勿一把拉死），打开双闪鸣笛示警，必要时蹭山体护栏减速。</p>
+              </div>
+              <div>
+                <div class="font-black text-sky-800 text-[11px] mb-0.5">🎬 车辆落水</div>
+                <p>黄金 1 分钟：立即解开安全带，<b>车门未淹没前全力推开</b>；打不开就砸侧窗四角（安全锤/头枕钢杆），破窗后深吸气上浮。头枕钢杆：把座椅头枕拔出，钢杆插进车窗下沿缝隙撬。</p>
+              </div>
+            </div>
+          </div>
+        </details>
+
+        <details class="skill-card tool-card bg-white rounded-xl border border-emerald-200 overflow-hidden">
+          <summary class="p-3.5 flex items-center gap-2.5">
+            <span class="w-9 h-9 rounded-lg bg-emerald-100 flex items-center justify-center text-lg shrink-0">🧒</span>
+            <div class="min-w-0 flex-1">
+              <div class="text-sm font-black text-slate-900">儿童走失应急</div>
+              <div class="text-[11px] text-slate-500 mt-0.5">十人四追法 · 立即报警不等待</div>
+            </div>
+            <span class="skill-arrow text-slate-400 shrink-0">▾</span>
+          </summary>
+          <div class="px-3.5 pb-3.5 pt-0 border-t border-emerald-100/60">
+            <div class="bg-emerald-50 rounded-xl p-3 mt-3 text-xs leading-relaxed text-slate-700 space-y-2">
+              <p><b class="text-emerald-800">黄金原则：</b>发现走失<b>立即报警</b>（失踪 24 小时内是黄金救援期），同时启动广播寻人。</p>
+              <p><b class="text-emerald-800">十人四追法：</b>妈妈原地等候；4 人向东南西北四个方向 2 公里内沿大路追赶；4 人快速赶到火车站、汽车站（防人贩外逃）；1 人报警；1 人留守调用监控。</p>
+              <p><b class="text-emerald-800">平时预防：</b>教孩子记住爸妈手机号和城市名；约定「走丢了站在原地不乱跑」；随身放一张写有联系方式的卡片。</p>
+            </div>
+          </div>
+        </details>
+
+        <details class="skill-card tool-card bg-white rounded-xl border border-orange-200 overflow-hidden">
+          <summary class="p-3.5 flex items-center gap-2.5">
+            <span class="w-9 h-9 rounded-lg bg-orange-100 flex items-center justify-center text-lg shrink-0">♨️</span>
+            <div class="min-w-0 flex-1">
+              <div class="text-sm font-black text-slate-900">烫伤急救五字诀</div>
+              <div class="text-[11px] text-slate-500 mt-0.5">冲 · 脱 · 泡 · 盖 · 送</div>
+            </div>
+            <span class="skill-arrow text-slate-400 shrink-0">▾</span>
+          </summary>
+          <div class="px-3.5 pb-3.5 pt-0 border-t border-orange-100/60">
+            <div class="bg-orange-50 rounded-xl p-3 mt-3 text-xs leading-relaxed text-slate-700 space-y-1.5 step-list">
+              <div class="skill-step flex items-start"><span class="flex-1"><b>冲</b>：流动冷水持续冲 15-30 分钟，快速带走热量。</span></div>
+              <div class="skill-step flex items-start"><span class="flex-1"><b>脱</b>：冷水中小心除去衣物，粘连处千万别硬撕。</span></div>
+              <div class="skill-step flex items-start"><span class="flex-1"><b>泡</b>：冷水浸泡 10-15 分钟缓解疼痛（勿用冰块直敷）。</span></div>
+              <div class="skill-step flex items-start"><span class="flex-1"><b>盖</b>：干净纱布或保鲜膜轻轻覆盖创面。</span></div>
+              <div class="skill-step flex items-start"><span class="flex-1"><b>送</b>：起泡、破皮、面积大时立即送医。</span></div>
+            </div>
+            <p class="text-[11px] text-orange-700 font-bold mt-2">⚠️ 牙膏、酱油、香油都是「帮倒忙」，一律不涂！</p>
+          </div>
+        </details>
+
+        <details class="skill-card tool-card bg-white rounded-xl border border-yellow-200 overflow-hidden">
+          <summary class="p-3.5 flex items-center gap-2.5">
+            <span class="w-9 h-9 rounded-lg bg-yellow-100 flex items-center justify-center text-lg shrink-0">⚡</span>
+            <div class="min-w-0 flex-1">
+              <div class="text-sm font-black text-slate-900">触电施救</div>
+              <div class="text-[11px] text-slate-500 mt-0.5">先断电，再救人，严禁徒手拉拽</div>
+            </div>
+            <span class="skill-arrow text-slate-400 shrink-0">▾</span>
+          </summary>
+          <div class="px-3.5 pb-3.5 pt-0 border-t border-yellow-100/60">
+            <div class="bg-yellow-50 rounded-xl p-3 mt-3 text-xs leading-relaxed text-slate-700 space-y-1.5 step-list">
+              <div class="skill-step flex items-start"><span class="flex-1"><b>第一步断电</b>：拉闸、拔插头，或站在干燥木凳上用<b>干木棍/塑料棒</b>挑开电线。</span></div>
+              <div class="skill-step flex items-start"><span class="flex-1">绝对禁止徒手或用湿布接触触电者。</span></div>
+              <div class="skill-step flex items-start"><span class="flex-1">脱离电源后立即判断意识与呼吸。</span></div>
+              <div class="skill-step flex items-start"><span class="flex-1">无呼吸立即做 CPR，同时拨打 120。</span></div>
+              <div class="skill-step flex items-start"><span class="flex-1">雷雨天远离窗户、水管，拔掉大功率电器插头。</span></div>
+            </div>
+          </div>
+        </details>
+
+        <details class="skill-card tool-card bg-white rounded-xl border border-red-200 overflow-hidden">
+          <summary class="p-3.5 flex items-center gap-2.5">
+            <span class="w-9 h-9 rounded-lg bg-red-100 flex items-center justify-center text-lg shrink-0">🥵</span>
+            <div class="min-w-0 flex-1">
+              <div class="text-sm font-black text-slate-900">中暑急救</div>
+              <div class="text-[11px] text-slate-500 mt-0.5">降温 · 补水 · 重症速送医</div>
+            </div>
+            <span class="skill-arrow text-slate-400 shrink-0">▾</span>
+          </summary>
+          <div class="px-3.5 pb-3.5 pt-0 border-t border-red-100/60">
+            <div class="bg-red-50 rounded-xl p-3 mt-3 text-xs leading-relaxed text-slate-700 space-y-1.5 step-list">
+              <div class="skill-step flex items-start"><span class="flex-1">迅速移到阴凉通风处，解开衣领扇风散热。</span></div>
+              <div class="skill-step flex items-start"><span class="flex-1">冷水擦拭身体，冰袋敷颈部、腋下、大腿根。</span></div>
+              <div class="skill-step flex items-start"><span class="flex-1">意识清醒者小口补充淡盐水。</span></div>
+              <div class="skill-step flex items-start"><span class="flex-1">高热（40℃+）、昏迷、抽搐 = 重症中暑，立即拨打 120 并持续物理降温。</span></div>
+            </div>
+            <p class="text-[11px] text-red-700 font-bold mt-2">⚠️ 藿香正气水含酒精，解暑反而加重脱水，且不可与头孢同服。</p>
+          </div>
+        </details>
+
+        <details class="skill-card tool-card bg-white rounded-xl border border-cyan-200 overflow-hidden">
+          <summary class="p-3.5 flex items-center gap-2.5">
+            <span class="w-9 h-9 rounded-lg bg-cyan-100 flex items-center justify-center text-lg shrink-0">🌊</span>
+            <div class="min-w-0 flex-1">
+              <div class="text-sm font-black text-slate-900">溺水施救</div>
+              <div class="text-[11px] text-slate-500 mt-0.5">叫伸抛 · 岸上优先 · 严禁盲目下水</div>
+            </div>
+            <span class="skill-arrow text-slate-400 shrink-0">▾</span>
+          </summary>
+          <div class="px-3.5 pb-3.5 pt-0 border-t border-cyan-100/60">
+            <div class="bg-cyan-50 rounded-xl p-3 mt-3 text-xs leading-relaxed text-slate-700 space-y-1.5 step-list">
+              <div class="skill-step flex items-start"><span class="flex-1"><b>叫</b>：大声呼救并拨打 110 / 120。</span></div>
+              <div class="skill-step flex items-start"><span class="flex-1"><b>伸</b>：岸上递竹竿、树枝、衣物，俯低身体拉。</span></div>
+              <div class="skill-step flex items-start"><span class="flex-1"><b>抛</b>：抛救生圈、泡沫板、密封空瓶。</span></div>
+              <div class="skill-step flex items-start"><span class="flex-1">非专业救援人员<b>绝不下水</b>，手拉手结绳救援同样危险。</span></div>
+              <div class="skill-step flex items-start"><span class="flex-1">救上岸后清理口鼻异物，无呼吸立即 CPR。</span></div>
+            </div>
+            <p class="text-[11px] text-cyan-700 font-bold mt-2">⚠️ 「倒挂控水」是流传最广的误区，会耽误黄金抢救时间！</p>
+          </div>
+        </details>
+
+      </div>
+    </section>
+
+    <!-- 板块：家庭应急信息卡生成器 -->
+    <section id="sec-ice" class="scroll-mt-60">
+      <h2 class="text-base font-black text-slate-900 mb-2 flex items-center gap-1.5">
+        <span>📱</span> 家庭应急信息卡生成器
+      </h2>
+      <div class="bg-white rounded-2xl border border-rose-200 shadow-sm p-4">
+        <p class="text-xs text-slate-500 leading-relaxed mb-3">一张卡贴冰箱、放钱包、存手机相册——万一突发意外，陌生人也能照着卡上的信息帮你和你的家人。填写后自动保存到本机。</p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+          <label class="block">
+            <span class="text-[11px] font-black text-slate-600">👤 姓名 / 户主</span>
+            <input id="iceName" type="text" placeholder="如：王大力（一家四口）" class="mt-1 w-full px-3 py-2 rounded-xl border border-slate-200 text-xs focus:outline-none focus:border-rose-400" />
+          </label>
+          <label class="block">
+            <span class="text-[11px] font-black text-slate-600">🩸 血型</span>
+            <select id="iceBlood" class="mt-1 w-full px-3 py-2 rounded-xl border border-slate-200 text-xs bg-white focus:outline-none focus:border-rose-400">
+              <option value="不详">不详</option><option>A 型</option><option>B 型</option><option>AB 型</option><option>O 型</option>
+            </select>
+          </label>
+          <label class="block">
+            <span class="text-[11px] font-black text-slate-600">📞 紧急联系人 1（姓名 + 电话）</span>
+            <input id="iceTel1" type="text" placeholder="如：李梅 138-xxxx-xxxx（妻子）" class="mt-1 w-full px-3 py-2 rounded-xl border border-slate-200 text-xs focus:outline-none focus:border-rose-400" />
+          </label>
+          <label class="block">
+            <span class="text-[11px] font-black text-slate-600">📞 紧急联系人 2</span>
+            <input id="iceTel2" type="text" placeholder="如：王小雨 139-xxxx-xxxx（女儿）" class="mt-1 w-full px-3 py-2 rounded-xl border border-slate-200 text-xs focus:outline-none focus:border-rose-400" />
+          </label>
+          <label class="block sm:col-span-2">
+            <span class="text-[11px] font-black text-slate-600">🏠 家庭住址</span>
+            <input id="iceAddr" type="text" placeholder="常住在哪，方便送回 / 联系" class="mt-1 w-full px-3 py-2 rounded-xl border border-slate-200 text-xs focus:outline-none focus:border-rose-400" />
+          </label>
+          <label class="block sm:col-span-2">
+            <span class="text-[11px] font-black text-slate-600">💊 过敏史 / 慢性病 / 长期用药</span>
+            <input id="iceMedical" type="text" placeholder="如：青霉素过敏、高血压（吃降压药）" class="mt-1 w-full px-3 py-2 rounded-xl border border-slate-200 text-xs focus:outline-none focus:border-rose-400" />
+          </label>
+        </div>
+        <button onclick="copyIceCard()" class="mt-3 w-full py-2.5 rounded-xl bg-gradient-to-r from-rose-600 to-red-600 text-white font-black text-xs sm:text-sm shadow-md active:scale-95 transition-all flex items-center justify-center gap-1.5">
+          <span>📋 复制信息卡文本</span>
+        </button>
+        <div id="iceCardPreview" class="mt-3 hidden"></div>
+        <p class="text-[11px] text-slate-400 mt-2">💡 还可以在手机锁屏界面设置「医疗急救卡」（iPhone：健康 App；安卓：紧急信息），双重保险。</p>
+      </div>
+    </section>
+
+    <!-- 板块：气象预警四色速查 -->
+    <section id="sec-weather" class="scroll-mt-60">
+      <h2 class="text-base font-black text-slate-900 mb-2 flex items-center gap-1.5">
+        <span>🌈</span> 气象预警四色速查
+      </h2>
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+        <div class="tool-card bg-white rounded-xl border border-sky-200 p-3">
+          <div class="flex items-center gap-1.5 mb-1.5">
+            <span class="w-5 h-5 rounded bg-sky-400 border border-sky-500 shrink-0"></span>
+            <span class="text-sm font-black text-sky-700">蓝色 · 一般</span>
+          </div>
+          <p class="text-[11px] text-slate-600 leading-relaxed">提前预警：关注天气预报，合理调整出行与户外计划。</p>
+        </div>
+        <div class="tool-card bg-white rounded-xl border border-amber-200 p-3">
+          <div class="flex items-center gap-1.5 mb-1.5">
+            <span class="w-5 h-5 rounded bg-amber-400 border border-amber-500 shrink-0"></span>
+            <span class="text-sm font-black text-amber-700">黄色 · 较重</span>
+          </div>
+          <p class="text-[11px] text-slate-600 leading-relaxed">减少外出：检查门窗，加固易吹落物品，远离临时建筑。</p>
+        </div>
+        <div class="tool-card bg-white rounded-xl border border-orange-200 p-3">
+          <div class="flex items-center gap-1.5 mb-1.5">
+            <span class="w-5 h-5 rounded bg-orange-500 border border-orange-600 shrink-0"></span>
+            <span class="text-sm font-black text-orange-700">橙色 · 严重</span>
+          </div>
+          <p class="text-[11px] text-slate-600 leading-relaxed">停止户外：远离低洼积水、广告牌、大树，备好手电与饮水。</p>
+        </div>
+        <div class="tool-card bg-white rounded-xl border border-red-200 p-3">
+          <div class="flex items-center gap-1.5 mb-1.5">
+            <span class="w-5 h-5 rounded bg-red-500 border border-red-600 shrink-0"></span>
+            <span class="text-sm font-black text-red-700">红色 · 特别严重</span>
+          </div>
+          <p class="text-[11px] text-slate-600 leading-relaxed">居家避险：非必要不出门，服从政府转移安排，车不涉水。</p>
+        </div>
+      </div>
+      <p class="text-[11px] text-slate-400 mt-2">💡 收到 12379 预警短信后，顺手转发到家人群，让每个人都看到。</p>
+    </section>
+
+    <!-- 板块：家庭急救包清单 -->
+    <section>
+      <h2 class="text-base font-black text-slate-900 mb-2 flex items-center gap-1.5">
+        <span>🩹</span> 家庭急救包配置指南
+      </h2>
+      <div class="bg-white rounded-2xl border border-emerald-200 shadow-sm p-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2 text-xs leading-relaxed">
+          <div class="p-2.5 rounded-xl bg-emerald-50 border border-emerald-100">
+            <div class="font-black text-emerald-800 text-[11px] mb-1">🧻 基础耗材</div>
+            <p class="text-slate-600">医用纱布、绷带、创可贴（多种规格）、医用胶带、棉签、一次性手套、三角巾</p>
+          </div>
+          <div class="p-2.5 rounded-xl bg-teal-50 border border-teal-100">
+            <div class="font-black text-teal-800 text-[11px] mb-1">🧴 消防消毒</div>
+            <p class="text-slate-600">碘伏（首选，不刺痛）、独立包装酒精棉片、生理盐水（冲洗伤口/洗眼）</p>
+          </div>
+          <div class="p-2.5 rounded-xl bg-sky-50 border border-sky-100">
+            <div class="font-black text-sky-800 text-[11px] mb-1">💊 常用药品</div>
+            <p class="text-slate-600">退烧止痛药、口服补液盐、抗过敏药、晕车药、蒙脱石散（腹泻）、常备慢性病药</p>
+          </div>
+          <div class="p-2.5 rounded-xl bg-amber-50 border border-amber-100">
+            <div class="font-black text-amber-800 text-[11px] mb-1">🔧 应急工具</div>
+            <p class="text-slate-600">体温计、剪刀与镊子、急救手册、手电筒、保温毯、口哨（被困呼救）、安全锤</p>
+          </div>
+        </div>
+        <p class="text-[11px] text-slate-500 mt-3 leading-relaxed">💡 <b>每 6 个月检查一次有效期</b>，过期药及时更换；自驾出游把整套装进后备箱；放全家人都知道的位置，别锁起来。</p>
+      </div>
+    </section>
+
+    <!-- 家庭隐患自查清单 -->
+    <section id="sec-checklist" class="scroll-mt-60">
+      <div class="flex items-center justify-between gap-2 mb-2 flex-wrap">
+        <h2 class="text-base font-black text-slate-900 flex items-center gap-1.5">
+          <span>🔍</span> 家庭隐患自查清单
+        </h2>
+        <button onclick="resetToolboxChecks()" class="text-[11px] font-bold px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 hover:bg-slate-200 active:scale-95 transition-all">重置清单</button>
+      </div>
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4">
+        <div class="flex items-center gap-2 mb-3">
+          <div class="flex-1 h-2.5 bg-slate-100 rounded-full overflow-hidden">
+            <div id="toolboxBar" class="h-full bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full transition-all duration-300" style="width: 0%"></div>
+          </div>
+          <span id="toolboxCount" class="text-xs font-black text-slate-700 shrink-0">0 / 12</span>
+        </div>
+        <div id="toolboxList" class="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-1.5"></div>
+        <p class="text-[11px] text-slate-400 mt-3">💡 建议每月自查一次，全部通过后这个家就是全家人的「安全屋」。进度保存在本机。</p>
+      </div>
+    </section>
+
+    <!-- 板块四：工具箱成员 -->
+    <section>
+      <h2 class="text-base font-black text-slate-900 mb-2 flex items-center gap-1.5">
+        <span>🧩</span> 配套安全工具
+      </h2>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+        <a href="index.html" class="tool-card bg-white rounded-xl border border-rose-200 p-3.5 flex items-center gap-2.5">
+          <span class="w-9 h-9 rounded-lg bg-rose-100 flex items-center justify-center text-lg shrink-0">🚨</span>
+          <div class="min-w-0 flex-1">
+            <div class="text-sm font-black text-slate-900">家庭应急报警助手</div>
+            <div class="text-[11px] text-slate-500 mt-0.5">一键呼救 · GPS 定位 · 报警话术</div>
+          </div>
+          <span class="text-rose-600 font-black text-xs shrink-0">→</span>
+        </a>
+        <a href="family-trip.html" class="tool-card bg-white rounded-xl border border-amber-200 p-3.5 flex items-center gap-2.5">
+          <span class="w-9 h-9 rounded-lg bg-amber-100 flex items-center justify-center text-lg shrink-0">✈️</span>
+          <div class="min-w-0 flex-1">
+            <div class="text-sm font-black text-slate-900">平安出行检查单</div>
+            <div class="text-[11px] text-slate-500 mt-0.5">双人核验 · 出发通行证 · 上上签</div>
+          </div>
+          <span class="text-amber-600 font-black text-xs shrink-0">→</span>
+        </a>
+        <a href="student-safety.html" class="tool-card bg-white rounded-xl border border-emerald-200 p-3.5 flex items-center gap-2.5">
+          <span class="w-9 h-9 rounded-lg bg-emerald-100 flex items-center justify-center text-lg shrink-0">🛡️</span>
+          <div class="min-w-0 flex-1">
+            <div class="text-sm font-black text-slate-900">安全小卫士乐园</div>
+            <div class="text-[11px] text-slate-500 mt-0.5">上学交通 · 校园安全 · 防溺水</div>
+          </div>
+          <span class="text-emerald-600 font-black text-xs shrink-0">→</span>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script>
+    // ==========================================
+    // 家庭隐患自查清单：12 项，进度存本机 localStorage
+    // ==========================================
+    const TOOLBOX_KEY = "family_safe_toolbox_checked_v1";
+
+    const HOME_HAZARD_ITEMS = [
+        { cat: "⚡ 用电", text: "插座不带「接线板接接线板」的串插，大功率电器专插专用" },
+        { cat: "⚡ 用电", text: "手机/充电宝不放在床上、沙发上过夜充电，人走断电" },
+        { cat: "🔥 用气", text: "燃气软管无老化龟裂，连接处用肥皂水检查过无气泡" },
+        { cat: "🔥 用气", text: "灶台旁没有面粉、酒精、纸盒等易燃物堆放" },
+        { cat: "🧯 消防", text: "烟感报警器/灭火器在有效期内，全家都知道放在哪" },
+        { cat: "🧯 消防", text: "楼道、阳台没有堆放杂物堵占逃生通道" },
+        { cat: "🪜 防跌落", text: "阳台窗台边没有可攀爬的凳子柜子，儿童锁扣有效" },
+        { cat: "🪜 防跌落", text: "卫生间铺了防滑垫，洗澡热水器不超过 50℃" },
+        { cat: "💊 药品", text: "药品分开存放且标签清晰，过期药已清理" },
+        { cat: "💊 药品", text: "清洁剂/消毒液没有用饮料瓶分装，且放在孩子够不到的地方" },
+        { cat: "🚗 车载", text: "车上有安全锤/破窗器、三角牌、灭火器和急救包" },
+        { cat: "🚗 车载", text: "全家都看过《保命技能卡》，知道家庭紧急集合点" }
+    ];
+
+    let toolboxChecked = {};
+
+    function loadToolboxState() {
+        try {
+            toolboxChecked = JSON.parse(localStorage.getItem(TOOLBOX_KEY)) || {};
+        } catch (e) {
+            toolboxChecked = {};
+        }
+    }
+
+    function persistToolboxState() {
+        try {
+            localStorage.setItem(TOOLBOX_KEY, JSON.stringify(toolboxChecked));
+        } catch (e) { /* 忽略 */ }
+    }
+
+    function updateToolboxProgress() {
+        const done = HOME_HAZARD_ITEMS.filter(i => toolboxChecked[i.text]).length;
+        const total = HOME_HAZARD_ITEMS.length;
+        const percent = Math.round((done / total) * 100);
+        document.getElementById('toolboxCount').textContent = `${done} / ${total}`;
+        document.getElementById('toolboxBar').style.width = percent + '%';
+    }
+
+    function renderToolboxList() {
+        const catColors = {
+            "⚡ 用电": "bg-amber-50 text-amber-700 border-amber-200",
+            "🔥 用气": "bg-orange-50 text-orange-700 border-orange-200",
+            "🧯 消防": "bg-red-50 text-red-700 border-red-200",
+            "🪜 防跌落": "bg-sky-50 text-sky-700 border-sky-200",
+            "💊 药品": "bg-violet-50 text-violet-700 border-violet-200",
+            "🚗 车载": "bg-emerald-50 text-emerald-700 border-emerald-200"
+        };
+
+        const wrap = document.getElementById('toolboxList');
+        wrap.innerHTML = HOME_HAZARD_ITEMS.map(item => {
+            const checked = !!toolboxChecked[item.text];
+            const color = catColors[item.cat] || "bg-slate-50 text-slate-700 border-slate-200";
+            return `
+                <button onclick="toggleToolboxItem(this)" data-key="${item.text}" class="check-row text-left p-2 rounded-xl border transition-all flex items-start gap-2 ${checked ? 'bg-emerald-50 border-emerald-300' : 'bg-white border-slate-200 hover:border-slate-300'}">
+                    <span class="check-mark mt-0.5 w-4 h-4 rounded-md flex items-center justify-center text-[10px] font-black shrink-0 ${checked ? 'bg-emerald-500 text-white' : 'border border-slate-300 bg-white'}">${checked ? '✓' : ''}</span>
+                    <span class="min-w-0 flex-1">
+                        <span class="px-1.5 py-px rounded border text-[10px] font-black ${color}">${item.cat}</span>
+                        <span class="block text-xs text-slate-700 mt-1 leading-relaxed ${checked ? 'line-through text-slate-400' : ''}">${item.text}</span>
+                    </span>
+                </button>`;
+        }).join('');
+        updateToolboxProgress();
+    }
+
+    function toggleToolboxItem(btn) {
+        const key = btn.dataset.key;
+        toolboxChecked[key] = !toolboxChecked[key];
+        persistToolboxState();
+        renderToolboxList();
+        const done = HOME_HAZARD_ITEMS.filter(i => toolboxChecked[i.text]).length;
+        if (done === HOME_HAZARD_ITEMS.length) {
+            showToast("太棒了！12 项全通过，你家就是全家人的「安全屋」🎉");
+        }
+    }
+
+    function resetToolboxChecks() {
+        toolboxChecked = {};
+        persistToolboxState();
+        renderToolboxList();
+        showToast("自查清单已重置，下个月再查一遍吧");
+    }
+
+    function showToast(msg) {
+        const t = document.createElement('div');
+        t.textContent = msg;
+        t.className = "fixed top-16 left-1/2 -translate-x-1/2 z-50 bg-slate-900/95 text-white px-4 py-2.5 rounded-full text-xs font-bold shadow-lg max-w-[90vw] text-center";
+        document.body.appendChild(t);
+        setTimeout(() => {
+            t.style.transition = "opacity 0.3s";
+            t.style.opacity = "0";
+            setTimeout(() => t.remove(), 320);
+        }, 2200);
+    }
+
+    // 横幅标签跳转：平滑滚动到对应板块（scroll-mt-60 预留吸顶横幅高度）
+    function scrollToSec(id) {
+        const el = document.getElementById(id);
+        if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    // ==========================================
+    // 家庭应急信息卡生成器：填写实时预览 + 本机保存 + 一键复制
+    // ==========================================
+    const ICE_KEY = "family_safe_toolbox_ice_v1";
+    const ICE_FIELDS = ["iceName", "iceBlood", "iceTel1", "iceTel2", "iceAddr", "iceMedical"];
+
+    function escapeHtml(str) {
+        return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    function loadIceState() {
+        try {
+            const saved = JSON.parse(localStorage.getItem(ICE_KEY)) || {};
+            ICE_FIELDS.forEach(id => {
+                const el = document.getElementById(id);
+                if (el && saved[id] !== undefined) el.value = saved[id];
+            });
+        } catch (e) { /* 忽略 */ }
+        renderIceCard();
+    }
+
+    function iceData() {
+        const g = id => (document.getElementById(id)?.value || '').trim();
+        return {
+            name: g('iceName') || '（未填写）',
+            blood: g('iceBlood') || '不详',
+            tel1: g('iceTel1'),
+            tel2: g('iceTel2'),
+            addr: g('iceAddr') || '（未填写）',
+            med: g('iceMedical') || '无已知过敏史 / 慢性病'
+        };
+    }
+
+    function persistIce() {
+        const data = {};
+        ICE_FIELDS.forEach(id => data[id] = (document.getElementById(id)?.value || '').trim());
+        try {
+            localStorage.setItem(ICE_KEY, JSON.stringify(data));
+        } catch (e) { /* 忽略 */ }
+    }
+
+    function renderIceCard() {
+        persistIce();
+        const d = iceData();
+        const pv = document.getElementById('iceCardPreview');
+        pv.classList.remove('hidden');
+        pv.innerHTML = `
+            <div class="rounded-2xl border-2 border-rose-200 bg-gradient-to-br from-rose-50 to-white overflow-hidden shadow-sm">
+                <div class="bg-gradient-to-r from-rose-600 to-red-500 text-white px-3.5 py-2 flex items-center justify-between gap-2">
+                    <span class="text-[11px] font-black tracking-widest">🆘 家庭应急信息卡 · IN CASE OF EMERGENCY</span>
+                    <span class="text-[10px] text-amber-200 font-bold shrink-0">贴冰箱 / 放钱包</span>
+                </div>
+                <div class="p-3.5 space-y-1.5 text-xs text-slate-700">
+                    <div class="flex items-center justify-between gap-2 pb-1.5 border-b border-dashed border-rose-200">
+                        <span class="font-black text-base text-rose-800">${escapeHtml(d.name)}</span>
+                        <span class="px-2 py-0.5 rounded-full bg-white text-rose-700 border border-rose-300 font-black text-[11px] shrink-0">血型 ${escapeHtml(d.blood)}</span>
+                    </div>
+                    ${d.tel1 ? `<p><b>📞 联系人 1：</b>${escapeHtml(d.tel1)}</p>` : ''}
+                    ${d.tel2 ? `<p><b>📞 联系人 2：</b>${escapeHtml(d.tel2)}</p>` : ''}
+                    <p><b>🏠 住址：</b>${escapeHtml(d.addr)}</p>
+                    <p><b>💊 过敏/病史：</b>${escapeHtml(d.med)}</p>
+                </div>
+            </div>`;
+    }
+
+    function copyIceCard() {
+        const d = iceData();
+        if (d.name === '（未填写）' && !d.tel1) {
+            showToast('先填写姓名或至少一个紧急联系人');
+            return;
+        }
+        const lines = [
+            '【家庭应急信息卡 IN CASE OF EMERGENCY】',
+            `👤 姓名：${d.name}（血型 ${d.blood}）`,
+            d.tel1 ? `📞 联系人 1：${d.tel1}` : '',
+            d.tel2 ? `📞 联系人 2：${d.tel2}` : '',
+            `🏠 家庭住址：${d.addr}`,
+            `💊 过敏史/病史：${d.med}`
+        ].filter(Boolean);
+        copyText(lines.join('\n'), '信息卡已复制，可存进家人手机备忘录');
+    }
+
+    function copyText(text, msg) {
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(text).then(() => showToast(msg)).catch(() => fallbackCopy(text, msg));
+        } else {
+            fallbackCopy(text, msg);
+        }
+    }
+
+    function fallbackCopy(text, msg) {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try {
+            document.execCommand('copy');
+            showToast(msg);
+        } catch (e) {
+            showToast('复制失败，请手动长按选择复制');
+        }
+        ta.remove();
+    }
+
+    loadToolboxState();
+    renderToolboxList();
+    loadIceState();
+    ICE_FIELDS.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('input', renderIceCard);
+    });
+
+    // ==========================================
+    // 保命技能卡教学视频：为每张卡片末尾注入按钮，弹窗内嵌 B 站播放器
+    // ==========================================
+    const VIDEO_ORDER = ["heimlich", "cpr", "extinguisher", "fireescape", "vehicle", "lost", "burn", "shock", "heatstroke", "drowning"];
+    const SKILL_VIDEOS = {
+        cpr:         { t: "心肺复苏 CPR 完整教程（中国红十字会）", bv: "BV1ofSSBfEZr" },
+        heimlich:    { t: "海姆立克急救法完整教学（成人/儿童/婴儿）", bv: "BV1zgQjB3EKg" },
+        extinguisher:{ t: "30 秒学会使用灭火器", bv: "BV1mUdtYuEQp" },
+        fireescape:  { t: "火场逃生全攻略（上海消防）", bv: "BV1fth36rENx" },
+        vehicle:     { t: "车辆落水自救实车演示", bv: "BV1B6VJ69Efz" },
+        lost:        { t: "儿童防拐骗安全教育动画", bv: "BV1LT4y1z7JA" },
+        burn:        { t: "烫伤急救五字诀：冲脱泡盖送（央视网）", bv: "BV1CAdhYqEh4" },
+        shock:       { t: "触电急救（中国红十字会）", bv: "BV1a6oVYGEiG" },
+        heatstroke:  { t: "中暑急救的正确操作", bv: "BV1MPtBzGEv1" },
+        drowning:    { t: "溺水现场急救全流程（中国红十字会）", bv: "BV1f3QjB6EUR" }
+    };
+
+    function openSkillVideo(key) {
+        const v = SKILL_VIDEOS[key];
+        if (!v) return;
+        document.getElementById("skillVideoTitle").textContent = "▶ " + v.t;
+        document.getElementById("skillVideoFrame").src =
+            "https://player.bilibili.com/player.html?bvid=" + v.bv + "&autoplay=0&danmaku=0&high_quality=1";
+        document.getElementById("skillVideoLink").href = "https://www.bilibili.com/video/" + v.bv;
+        document.getElementById("videoModal").classList.remove("hidden");
+    }
+
+    function closeVideoModal() {
+        document.getElementById("videoModal").classList.add("hidden");
+        document.getElementById("skillVideoFrame").src = "about:blank";
+    }
+
+    document.querySelectorAll(".skill-card").forEach((card, i) => {
+        const key = VIDEO_ORDER[i];
+        if (!key || !card.querySelector(":scope > div")) return;
+        const wrap = document.createElement("div");
+        wrap.className = "pt-2.5 mt-1 border-t border-slate-100";
+        wrap.innerHTML =
+            '<button onclick="openSkillVideo(\'' + key + '\')" ' +
+            'class="w-full py-2 rounded-xl bg-gradient-to-r from-sky-600 to-blue-600 hover:from-sky-700 hover:to-blue-700 text-white text-xs font-black shadow-sm active:scale-95 transition-all flex items-center justify-center gap-1.5">' +
+            '<span>▶</span><span>观看教学视频</span></button>';
+        card.querySelector(":scope > div").appendChild(wrap);
+    });
+  </script>
+
+  <!-- 技能教学视频弹窗（内嵌 B 站播放器） -->
+  <div id="videoModal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-3" onclick="if(event.target===this) closeVideoModal()">
+    <div class="bg-white rounded-2xl w-full max-w-2xl overflow-hidden shadow-2xl">
+      <div class="flex items-center justify-between gap-2 px-4 py-2.5 bg-gradient-to-r from-sky-600 to-blue-700 text-white">
+        <span id="skillVideoTitle" class="text-xs sm:text-sm font-black truncate">▶ 教学视频</span>
+        <button onclick="closeVideoModal()" class="w-7 h-7 rounded-full bg-white/15 hover:bg-white/25 flex items-center justify-center text-base shrink-0">✕</button>
+      </div>
+      <div class="aspect-video bg-slate-100">
+        <iframe id="skillVideoFrame" src="about:blank" class="w-full h-full" frameborder="0" scrolling="no" allowfullscreen allow="encrypted-media; fullscreen"></iframe>
+      </div>
+      <div class="px-4 py-2.5 flex items-center justify-between gap-2">
+        <span class="text-[10px] text-slate-400 leading-snug">视频来自哔哩哔哩公开科普内容，仅供学习参考</span>
+        <a id="skillVideoLink" href="#" target="_blank" rel="noopener" class="text-[11px] font-black text-sky-600 hover:underline shrink-0">在B站打开 ↗</a>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

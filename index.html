@@ -3,121 +3,1215 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>全家平安守护中心 · 出行清单 · 儿童乐园 · 家庭应急</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <title>家庭应急报警助手（SOS）｜119/110/120呼救、报警话术与卡通安全常识卡片</title>
+  <meta name="description" content="面向家庭场景的应急报警与安全自救辅助工具：支持119/110/120一键呼救、GPS定位抓取、结构化报警话术与微信群同步简报、本地家庭档案，以及卡通安全常识卡片与一键生成群分享海报。" />
+  <meta name="keywords" content="家庭应急,119报警话术,110呼救,120急救,油锅起火,燃气泄漏,海姆立克,烫伤处理,安全常识卡片,家庭群分享图" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="家庭应急报警助手（SOS）｜呼救话术与家庭安全常识卡片" />
+  <meta property="og:description" content="关键时刻不慌乱：一键呼救、结构化报警话术、家庭本地档案与卡通安全卡片，支持一键生成发往家庭群的分享海报。" />
+  <meta name="theme-color" content="#d92d20" />
+  <link rel="stylesheet" href="assets/site.css" />
+  <script src="assets/layout.js" data-page="home"></script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "家庭应急报警助手（SOS）",
+    "applicationCategory": "SafetyApplication",
+    "operatingSystem": "All",
+    "description": "提供一键呼救指引、结构化报警话术生成、本地家庭档案与家庭安全常识卡片及群分享海报导出。"
+  }
+  </script>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;600;700;900&display=swap');
+    :root {
+      --surface: #ffffff;
+      --surface-soft: #f2f4f7;
+      --text: #101828;
+      --muted: #475467;
+      --line: #e4e7ec;
+      --red: #d92d20;
+      --red-dark: #b42318;
+      --red-bg: #fef3f2;
+      --amber: #d97706;
+      --amber-bg: #fffbeb;
+      --blue: #155eef;
+      --blue-bg: #eff4ff;
+      --green: #067647;
+      --green-bg: #ecfdf3;
+      --radius: 16px;
+      --shadow: 0 2px 10px rgba(16, 24, 40, 0.06);
+    }
+
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
     body {
-      font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
-      background:
-        radial-gradient(circle at 15% 10%, #fef3c7 0%, transparent 45%),
-        radial-gradient(circle at 85% 15%, #dcfce7 0%, transparent 42%),
-        linear-gradient(180deg, #fffdf7 0%, #f8fafc 100%);
-      color: #0f172a;
-      overflow-x: hidden;
+      line-height: 1.5;
     }
-    .portal-card {
-      transition: transform 0.18s ease, box-shadow 0.18s ease;
+
+    .app-wrap {
+      max-width: 56rem;
+      margin: 0 auto;
+      padding: 12px 14px 24px;
     }
-    .portal-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 14px 28px -10px rgba(15, 23, 42, 0.14);
+
+    .topbar {
+      background: linear-gradient(135deg, #b42318 0%, #d92d20 60%, #ef4444 100%);
+      color: #fff;
+      border-radius: 18px;
+      padding: 14px 16px;
+      box-shadow: 0 6px 18px rgba(217, 45, 32, 0.22);
+      margin: 12px 0;
+    }
+
+    .topbar-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .topbar h1 {
+      margin: 0;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0.2px;
+    }
+
+    .topbar-sub {
+      margin: 4px 0 0;
+      font-size: 10px;
+      opacity: 0.92;
+    }
+
+    .pill-badge {
+      background: rgba(255, 255, 255, 0.18);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: #fff;
+      font-size: 10px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      white-space: nowrap;
+      font-weight: 600;
+    }
+
+    .notice-bar {
+      background: var(--amber-bg);
+      border: 1px solid #fde68a;
+      color: #78350f;
+      border-radius: 12px;
+      padding: 9px 12px;
+      font-size: 12px;
+      margin-bottom: 12px;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 14px;
+      box-shadow: var(--shadow);
+      margin-bottom: 12px;
+    }
+
+    .card-title {
+      margin: 0 0 10px;
+      font-size: 15px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .dial-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .dial-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      border-radius: 16px;
+      padding: 14px 8px;
+      color: #fff;
+      font-weight: 700;
+      box-shadow: 0 4px 12px rgba(16, 24, 40, 0.12);
+      transition: transform 0.12s ease;
+    }
+
+    .dial-btn:active { transform: scale(0.97); }
+    .dial-119 { background: linear-gradient(180deg, #e11d48, #b42318); }
+    .dial-110 { background: linear-gradient(180deg, #2563eb, #155eef); }
+    .dial-120 { background: linear-gradient(180deg, #059669, #067647); }
+
+    .dial-num { font-size: 24px; line-height: 1.1; }
+    .dial-name { font-size: 10px; margin-top: 4px; opacity: 0.95; }
+
+    .copy-nums {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      border: 1px solid var(--line);
+      background: var(--surface);
+      color: var(--text);
+      border-radius: 10px;
+      padding: 8px 12px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      transition: background 0.15s ease, border-color 0.15s ease;
+    }
+
+    .btn:active { transform: scale(0.98); }
+    .btn-primary { background: var(--red); border-color: var(--red); color: #fff; }
+    .btn-primary:hover { background: var(--red-dark); }
+    .btn-blue { background: var(--blue-bg); border-color: #bfd7fe; color: var(--blue); }
+    .btn-green { background: var(--green-bg); border-color: #abefc6; color: var(--green); }
+    .btn-sm { padding: 6px 10px; font-size: 12px; border-radius: 8px; }
+
+    .loc-box {
+      background: var(--surface-soft);
+      border: 1px dashed #cbd5e1;
+      border-radius: 12px;
+      padding: 11px 12px;
+      font-size: 13px;
+      margin-top: 8px;
+      word-break: break-all;
+    }
+
+    .chip-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .chip {
+      border: 1px solid var(--line);
+      background: var(--surface-soft);
+      color: var(--text);
+      padding: 7px 12px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .chip.active {
+      background: var(--red-bg);
+      border-color: var(--red);
+      color: var(--red-dark);
+    }
+
+    .field-label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--muted);
+      margin: 10px 0 5px;
+    }
+
+    input[type="text"],
+    input[type="tel"],
+    textarea,
+    select {
+      width: 100%;
+      border: 1px solid #d0d5dd;
+      border-radius: 10px;
+      padding: 9px 11px;
+      font-size: 14px;
+      color: var(--text);
+      background: #fff;
+      font-family: inherit;
+    }
+
+    textarea { min-height: 76px; resize: vertical; }
+
+    .script-box {
+      background: #fef3f2;
+      border: 1px solid #fecdca;
+      border-radius: 12px;
+      padding: 12px;
+      font-size: 14px;
+      line-height: 1.65;
+      white-space: pre-line;
+      margin-top: 8px;
+    }
+
+    .sync-box {
+      background: #eff4ff;
+      border: 1px solid #c7d7fe;
+      border-radius: 12px;
+      padding: 12px;
+      font-size: 13px;
+      line-height: 1.6;
+      white-space: pre-line;
+      margin-top: 8px;
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    @media (min-width: 560px) {
+      .cards-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    .safety-card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .safety-illus {
+      width: 100%;
+      height: 138px;
+      display: block;
+      background: #fff8eb;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .safety-body { padding: 12px; flex: 1; display: flex; flex-direction: column; }
+
+    .safety-cat {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--blue);
+      background: var(--blue-bg);
+      padding: 2px 8px;
+      border-radius: 999px;
+      align-self: flex-start;
+      margin-bottom: 6px;
+    }
+
+    .safety-title { margin: 0 0 6px; font-size: 15px; font-weight: 700; }
+
+    .safety-slogan {
+      background: #fff7ed;
+      border-left: 3px solid #ea580c;
+      padding: 6px 9px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #9a3412;
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 8px;
+    }
+
+    .do-item { color: var(--green); font-size: 12px; margin: 3px 0; }
+    .dont-item { color: var(--red-dark); font-size: 12px; margin: 3px 0; }
+
+    .card-actions {
+      display: flex;
+      gap: 6px;
+      margin-top: auto;
+      padding-top: 10px;
+      flex-wrap: wrap;
+    }
+
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    .bottom-nav {
+      display: flex;
+      gap: 5px;
+      margin: 12px 0 4px;
+    }
+
+    .nav-btn {
+      flex: 1;
+      min-width: 0;
+      border: 1px solid var(--line);
+      background: var(--surface);
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 7px 2px;
+      border-radius: 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      white-space: nowrap;
+      transition: all 0.15s ease;
+    }
+
+    .nav-btn span.ico { font-size: 14px; line-height: 1; }
+    .nav-btn:hover { border-color: var(--red); color: var(--red); }
+    .nav-btn.active {
+      color: #fff;
+      background: var(--red);
+      border-color: var(--red-dark);
+      box-shadow: 0 3px 10px rgba(217, 45, 32, 0.25);
+    }
+
+    @media (max-width: 360px) {
+      .nav-btn { font-size: 11px; padding: 6px 0; gap: 2px; }
+      .nav-btn span.ico { font-size: 13px; }
+    }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(16, 24, 40, 0.65);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 14px;
+      z-index: 80;
+    }
+
+    .modal-backdrop.open { display: flex; }
+
+    .modal-box {
+      background: #fff;
+      border-radius: 18px;
+      max-width: 520px;
+      width: 100%;
+      max-height: 88vh;
+      overflow-y: auto;
+      padding: 16px;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.25);
+    }
+
+    .modal-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .modal-head h3 { margin: 0; font-size: 16px; }
+
+    .poster-preview-img {
+      width: 100%;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      display: block;
+      margin: 8px 0 12px;
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 86px;
+      transform: translateX(-50%) translateY(16px);
+      background: rgba(16, 24, 40, 0.92);
+      color: #fff;
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      z-index: 120;
+      white-space: nowrap;
+    }
+
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    .contact-row {
+      background: var(--surface-soft);
+      border-radius: 12px;
+      padding: 10px 12px;
+      margin-top: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
     }
   </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between">
-  <div class="max-w-4xl w-full mx-auto px-4 pt-6 pb-8 space-y-5">
-    <!-- 顶部统一视觉品牌横幅 -->
-    <header class="bg-white/95 rounded-3xl p-5 sm:p-6 border border-amber-200/80 shadow-sm">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div class="flex items-start sm:items-center gap-3.5">
-          <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-400 via-orange-500 to-rose-500 text-white flex items-center justify-center text-2xl font-black shadow-md shrink-0">
-            🏡
-          </div>
-          <div>
-            <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-900 text-xs font-black mb-1">
-              <span>全家安全工具箱</span>
-              <span>·</span>
-              <span>同级多页协同</span>
-            </div>
-            <h1 class="text-2xl sm:text-3xl font-black tracking-tight text-slate-900">全家平安守护中心</h1>
-            <p class="text-xs sm:text-sm text-slate-600 mt-1">
-              覆盖自驾出发前仪式感检查、儿童趣味安全互动与家庭突发应急报警三大场景
-            </p>
-          </div>
-        </div>
+<body class="site">
+  <div id="site-header"></div>
 
-        <!-- 快捷紧急号码条（不溢出、紧凑排列） -->
-        <div class="flex flex-wrap items-center gap-1.5 text-xs font-black shrink-0">
-          <a href="tel:12122" class="px-3 py-2 rounded-xl bg-rose-50 text-rose-700 border border-rose-200 hover:bg-rose-100">高速 12122</a>
-          <a href="tel:119" class="px-3 py-2 rounded-xl bg-orange-50 text-orange-800 border border-orange-200 hover:bg-orange-100">火警 119</a>
-          <a href="tel:120" class="px-3 py-2 rounded-xl bg-emerald-50 text-emerald-800 border border-emerald-200 hover:bg-emerald-100">急救 120</a>
-        </div>
+  <div class="app-wrap">
+    <header class="topbar">
+      <div class="topbar-row">
+        <h1>🚨 家庭应急报警助手（SOS）</h1>
+        <span class="pill-badge">离线可用 · 家庭版</span>
       </div>
+      <p class="topbar-sub">一键呼救 · 结构化报警话术 · 家庭档案 · 安全常识卡片与群分享图</p>
     </header>
 
-    <!-- 三大核心页面跳转卡片 -->
-    <main class="grid grid-cols-1 md:grid-cols-3 gap-4">
-      <!-- 卡片 1：家庭平安出行清单 -->
-      <a href="family-trip.html" class="portal-card bg-white rounded-3xl p-5 border-2 border-amber-200 flex flex-col justify-between shadow-sm">
-        <div>
-          <div class="flex items-center justify-between mb-3">
-            <span class="w-12 h-12 rounded-2xl bg-amber-100 text-amber-800 flex items-center justify-center text-2xl">✈️</span>
-            <span class="text-xs font-black px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 border border-amber-200">自驾出行</span>
-          </div>
-          <h2 class="text-lg font-black text-slate-900">家庭平安出行检查单</h2>
-          <p class="text-xs sm:text-sm text-slate-600 mt-1.5 leading-relaxed">
-            副驾领读、机长确认，支持出发前/高速/途中休整场景、语音朗读、长辈大字模式与出发通行证海报。
-          </p>
-        </div>
-        <div class="mt-5 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-black text-amber-700">
-          <span>进入出行检查单</span>
-          <span>打开页面 →</span>
-        </div>
-      </a>
+    <!-- 场景切换标签（样式对齐出行清单页） -->
+    <nav class="bottom-nav" aria-label="主导航">
+      <button type="button" class="nav-btn active" data-tab="call">
+        <span class="ico">🚨</span>
+        <span>一键呼救</span>
+      </button>
+      <button type="button" class="nav-btn" data-tab="script">
+        <span class="ico">🗣️</span>
+        <span>报警话术</span>
+      </button>
+      <button type="button" class="nav-btn" data-tab="profile">
+        <span class="ico">📋</span>
+        <span>家庭档案</span>
+      </button>
+      <button type="button" class="nav-btn" data-tab="cards">
+        <span class="ico">🎨</span>
+        <span>常识卡片</span>
+      </button>
+    </nav>
 
-      <!-- 卡片 2：安全小卫士乐园 -->
-      <a href="kids-guardian.html" class="portal-card bg-white rounded-3xl p-5 border-2 border-emerald-200 flex flex-col justify-between shadow-sm">
-        <div>
-          <div class="flex items-center justify-between mb-3">
-            <span class="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-800 flex items-center justify-center text-2xl">🛡️</span>
-            <span class="text-xs font-black px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">儿童互动</span>
-          </div>
-          <h2 class="text-lg font-black text-slate-900">安全小卫士乐园</h2>
-          <p class="text-xs sm:text-sm text-slate-600 mt-1.5 leading-relaxed">
-            面向孩子的趣味安全实验室：拖拽体验汽车盲区与司机视角、交通标志大闯关、模拟拨号与校园找茬。
-          </p>
-        </div>
-        <div class="mt-5 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-black text-emerald-700">
-          <span>进入儿童安全乐园</span>
-          <span>打开页面 →</span>
-        </div>
-      </a>
+    <div class="notice-bar">
+      ⚠️ <strong>紧急提示：</strong>遇火情、险情、突发疾病或治安事件，请<strong>第一时间直接拨打 119 / 110 / 120</strong>。本工具用于辅助报清位置、整理话术与生成家庭群安全卡片。
+    </div>
 
-      <!-- 卡片 3：家庭应急报警助手 -->
-      <a href="home-sos.html" class="portal-card bg-white rounded-3xl p-5 border-2 border-rose-200 flex flex-col justify-between shadow-sm">
-        <div>
-          <div class="flex items-center justify-between mb-3">
-            <span class="w-12 h-12 rounded-2xl bg-rose-100 text-rose-800 flex items-center justify-center text-2xl">🚨</span>
-            <span class="text-xs font-black px-2.5 py-1 rounded-full bg-rose-50 text-rose-700 border border-rose-200">家庭急救</span>
-          </div>
-          <h2 class="text-lg font-black text-slate-900">家庭应急报警助手（SOS）</h2>
-          <p class="text-xs sm:text-sm text-slate-600 mt-1.5 leading-relaxed">
-            119/110/120 快捷呼救、GPS 定位抓取、结构化报警话术与家人同步简报、本地家庭档案及常识海报。
-          </p>
+    <!-- 分页 1：一键呼救 -->
+    <section id="panel-call" class="tab-panel active">
+      <div class="card">
+        <h2 class="card-title">🚨 紧急电话直拨</h2>
+        <div class="dial-grid">
+          <a class="dial-btn dial-119" href="tel:119">
+            <span class="dial-num">119</span>
+            <span class="dial-name">火警 / 抢险救援</span>
+          </a>
+          <a class="dial-btn dial-110" href="tel:110">
+            <span class="dial-num">110</span>
+            <span class="dial-name">匪警 / 治安 / 交警</span>
+          </a>
+          <a class="dial-btn dial-120" href="tel:120">
+            <span class="dial-num">120</span>
+            <span class="dial-name">医疗急救</span>
+          </a>
         </div>
-        <div class="mt-5 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-black text-rose-700">
-          <span>进入家庭应急助手</span>
-          <span>打开页面 →</span>
+        <div class="copy-nums">
+         
+          <button type="button" class="btn btn-sm btn-blue" data-goto-tab="script">去生成报警话术 →</button>
         </div>
-      </a>
-    </main>
+      </div>
 
-    <!-- 家庭使用建议条 -->
-    <footer class="bg-white/90 rounded-2xl px-4 py-3 border border-slate-200 text-xs text-slate-600 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
-      <span>💡 建议将 <strong>index.html</strong> 放入同一目录并添加至手机主屏幕，方便节假日出行与家庭日常随时打开。</span>
-      <span class="font-bold text-slate-500">本地存储 · 无需复杂配置</span>
-    </footer>
+      <div class="card">
+        <h2 class="card-title">
+          <span>📍 当前定位抓取</span>
+          <button type="button" class="btn btn-sm btn-primary" id="btn-get-loc">获取当前定位</button>
+        </h2>
+        <div id="loc-display" class="loc-box">尚未获取实时定位。点击右上角“获取当前定位”（需授权浏览器定位权限），或直接使用下方预存家庭地址。</div>
+        <div class="copy-nums">
+          <button type="button" class="btn btn-sm btn-green" id="btn-copy-loc">复制定位信息</button>
+          <button type="button" class="btn btn-sm" id="btn-use-home-addr">填入预存家庭地址</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2 class="card-title">🏠 预存家庭地址速报</h2>
+        <div id="home-quick-card" class="loc-box">暂无预存地址，请前往底部「家庭档案」填写保存。</div>
+      </div>
+    </section>
+
+    <!-- 分页 2：报警话术 -->
+    <section id="panel-script" class="tab-panel">
+      <div class="card">
+        <h2 class="card-title">🗣️ 结构化报警话术生成器</h2>
+        <label class="field-label">1. 险情类型</label>
+        <div class="chip-group" id="chips-type">
+          <button type="button" class="chip active" data-val="火灾/冒烟">🔥 火灾/冒烟</button>
+          <button type="button" class="chip" data-val="突发疾病/受伤">🏥 突发疾病/受伤</button>
+          <button type="button" class="chip" data-val="燃气泄漏">🫧 燃气泄漏</button>
+          <button type="button" class="chip" data-val="可疑人员/治安突发">🛡️ 治安/可疑情况</button>
+          <button type="button" class="chip" data-val="交通事故">🚗 交通事故</button>
+        </div>
+
+        <label class="field-label">2. 人员与被困情况</label>
+        <div class="chip-group" id="chips-trapped">
+          <button type="button" class="chip active" data-val="暂无人员被困，人员正安全撤离">暂无被困</button>
+          <button type="button" class="chip" data-val="有老人/小孩或行动不便人员被困">有老幼/被困</button>
+          <button type="button" class="chip" data-val="有人昏迷/呼吸困难/大量出血">有人急症/受伤</button>
+        </div>
+
+        <label class="field-label">3. 现场关键风险</label>
+        <div class="chip-group" id="chips-risk">
+          <button type="button" class="chip active" data-val="明火与浓烟较大">明火/浓烟</button>
+          <button type="button" class="chip" data-val="涉及厨房燃气/电器/电动车">燃气/电/电动车</button>
+          <button type="button" class="chip" data-val="楼道或大门通道可能受阻">通道可能受阻</button>
+        </div>
+
+        <label class="field-label" for="script-addr">4. 详细位置（小区/栋号/楼层/路口标志）</label>
+        <input type="text" id="script-addr" placeholder="例如：阳光花园3栋2单元502室，北门近消防通道" />
+
+        <label class="field-label" for="script-extra">5. 补充说明（可选）</label>
+        <input type="text" id="script-extra" placeholder="例如：老人有高血压，已关闭入户总电源" />
+
+        <label class="field-label">接警员标准口播稿（照着念即可）</label>
+        <div id="output-call-script" class="script-box"></div>
+        <div class="copy-nums">
+          <button type="button" class="btn btn-sm btn-primary" id="btn-copy-call-script">复制报警口播稿</button>
+        </div>
+
+        <label class="field-label">家人 / 微信群同步简报</label>
+        <div id="output-family-sync" class="sync-box"></div>
+        <div class="copy-nums">
+          <button type="button" class="btn btn-sm btn-blue" id="btn-copy-family-sync">复制家人同步简报</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 分页 3：家庭档案 -->
+    <section id="panel-profile" class="tab-panel">
+      <div class="card">
+        <h2 class="card-title">📋 家庭应急档案（本地离线保存）</h2>
+        <label class="field-label" for="pf-addr">家庭详细地址</label>
+        <input type="text" id="pf-addr" placeholder="省/市/区/街道/小区/楼栋/门牌号" />
+
+        <label class="field-label" for="pf-gate">消防车/救护车入口与楼层指引</label>
+        <input type="text" id="pf-gate" placeholder="例如：东门进直行80米，电梯直达12楼，门禁密码#1234" />
+
+        <label class="field-label" for="pf-c1-name">紧急联系人 1（姓名与关系）</label>
+        <input type="text" id="pf-c1-name" placeholder="例如：张先生（配偶）" />
+        <label class="field-label" for="pf-c1-tel">紧急联系人 1 电话</label>
+        <input type="tel" id="pf-c1-tel" placeholder="13800000000" />
+
+        <label class="field-label" for="pf-c2-name">紧急联系人 2（姓名与关系）</label>
+        <input type="text" id="pf-c2-name" placeholder="例如：李女士（母亲）" />
+        <label class="field-label" for="pf-c2-tel">紧急联系人 2 电话</label>
+        <input type="tel" id="pf-c2-tel" placeholder="13900000000" />
+
+        <label class="field-label" for="pf-medical">家庭成员用药 / 过敏 / 慢病备忘</label>
+        <textarea id="pf-medical" placeholder="例如：爷爷有冠心病随身带速效救心丸；孩子对青霉素过敏"></textarea>
+
+        <div class="copy-nums">
+          <button type="button" class="btn btn-primary" id="btn-save-profile">保存家庭档案</button>
+          <button type="button" class="btn btn-green" id="btn-copy-profile">一键复制完整档案</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2 class="card-title">📞 紧急联系人快捷拨号</h2>
+        <div id="emergency-contacts-list"></div>
+      </div>
+    </section>
+
+    <!-- 分页 4：常识卡片 -->
+    <section id="panel-cards" class="tab-panel">
+      <div class="card">
+        <h2 class="card-title">🎨 家庭安全常识卡片（8张核心图卡）</h2>
+        <p style="margin:0 0 10px;font-size:12px;color:var(--muted);">
+          点击任意卡片上的<strong>「生成群分享图」</strong>，即可合成高清卡通安全海报，方便保存后发到家庭群。
+        </p>
+        <div class="chip-group" id="card-filters">
+          <button type="button" class="chip active" data-cat="全部">全部 (8)</button>
+          <button type="button" class="chip" data-cat="火灾逃生">火灾逃生 (4)</button>
+          <button type="button" class="chip" data-cat="燃气用电">燃气用电 (1)</button>
+          <button type="button" class="chip" data-cat="家庭急救">家庭急救 (3)</button>
+        </div>
+      </div>
+      <div id="cards-container" class="cards-grid"></div>
+    </section>
   </div>
+
+  <div id="site-footer"></div>
+
+  <!-- 弹窗：群分享海报图片 -->
+  <div id="modal-backdrop" class="modal-backdrop" role="dialog" aria-modal="true">
+    <div class="modal-box">
+      <div class="modal-head">
+        <h3 id="modal-title">安全卡片海报</h3>
+        <button type="button" class="btn btn-sm" id="btn-close-modal">✕ 关闭</button>
+      </div>
+      <div id="modal-body"></div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast">已复制</div>
+
+  <script>
+    (function () {
+      const STORAGE_KEY = "family_sos_profile_v1";
+
+      const SAFETY_CARDS = [
+        {
+          id: "fire-pan",
+          cat: "火灾逃生",
+          title: "油锅起火怎么办？",
+          slogan: "锅盖盖紧、关火断气、绝不泼水！",
+          doList: ["立即关闭燃气阀门或灶具开关", "沿锅边盖上锅盖或防火毯隔绝氧气", "灭火后静置冷却，防止复燃"],
+          dontList: ["严禁向油锅泼水（会导致热油爆溅伤人）", "切忌端着着火油锅乱跑"],
+          artType: "pan"
+        },
+        {
+          id: "gas-leak",
+          cat: "燃气用电",
+          title: "闻到燃气味怎么办？",
+          slogan: "关阀、开窗、不触碰任何电器开关！",
+          doList: ["轻轻关闭燃气灶具和管道阀门", "推开窗户通风散气，迅速撤离到室外安全处"],
+          dontList: ["严禁开/关灯、按门铃、抽油烟机或使用打火机", "尽量在室外安全处拨打燃气公司或 119"],
+          artType: "gas"
+        },
+        {
+          id: "fire-smoke",
+          cat: "火灾逃生",
+          title: "浓烟封道如何逃生？",
+          slogan: "低姿弯腰、湿巾掩鼻、遇浓烟不盲闯！",
+          doList: ["靠近地面低姿前行，烟雾较轻处空气较多", "用湿毛巾/衣物捂住口鼻，向安全出口撤离", "若门把手发烫或外走廊浓烟大，退守室内关门堵缝求援"],
+          dontList: ["绝对不要乘坐电梯逃生", "不要贪恋财物折返火场"],
+          artType: "smoke"
+        },
+        {
+          id: "aid-burn",
+          cat: "家庭急救",
+          title: "开水/热汤烫伤急救",
+          slogan: "冲、脱、泡、盖、送——冷水降温至少15~20分钟！",
+          doList: ["冲：流动冷水温和冲洗烫伤部位降温", "脱：在水中小心脱去衣物，粘连处剪开勿硬扯", "盖：用干净纱布/保鲜膜轻盖保护创面，及时就医"],
+          dontList: ["严禁涂抹牙膏、酱油、香油、面粉或冰块直接敷"],
+          artType: "burn"
+        },
+        {
+          id: "aid-choke",
+          cat: "家庭急救",
+          title: "气管异物卡喉急救",
+          slogan: "能咳嗽先鼓励咳嗽，无法发声立即施救！",
+          doList: ["成人/大童：站其身后，一手握拳抵住肚脐上两横指，另一手包拳向上向内快速冲击", "1岁以下婴儿：俯卧前臂托住头部低于躯干，拍背5次+翻正按胸5次"],
+          dontList: ["盲目用手指伸入喉咙抠挖，可能把异物推得更深"],
+          artType: "choke"
+        },
+        {
+          id: "fire-ext",
+          cat: "火灾逃生",
+          title: "干粉灭火器怎么用？",
+          slogan: "提、拔、握、压——对准火源根部扫射！",
+          doList: ["一提：提起灭火器，保持直立", "二拔：拔掉保险销；三握：握住喷管前端；四压：压下把手"],
+          dontList: ["不要站在下风口喷射，避免回火或粉尘呛入"],
+          artType: "ext"
+        },
+        {
+          id: "fire-ebike",
+          cat: "火灾逃生",
+          title: "电动车/锂电池冒烟预警",
+          slogan: "先断电、快疏散、有毒烟气远离吸入！",
+          doList: ["第一时间远离锂电池冒烟/鼓包位置，疏散家人", "拨打 119 说明是锂电池/电动车险情"],
+          dontList: ["切勿在室内、楼道或入户门厅给电瓶充电", "锂电池起火不可仅靠少量水简单扑救，需专业处置"],
+          artType: "battery"
+        },
+        {
+          id: "aid-nosebleed",
+          cat: "家庭急救",
+          title: "流鼻血正确止血姿势",
+          slogan: "身体微前倾、捏住鼻翼软部、切忌仰头！",
+          doList: ["坐直并略微低头前倾，让血液从鼻孔流出而非咽下", "用拇指和食指捏紧鼻翼两侧柔软处持续压迫5~10分钟"],
+          dontList: ["不要仰头（易导致血液倒流呛咳或呕吐）", "不要乱塞纸巾或棉球后用力拽出"],
+          artType: "nose"
+        }
+      ];
+
+      const state = {
+        tab: "call",
+        category: "全部",
+        locationText: "",
+        script: {
+          type: "火灾/冒烟",
+          trapped: "暂无人员被困，人员正安全撤离",
+          risk: "明火与浓烟较大",
+          addr: "",
+          extra: ""
+        },
+        profile: {
+          addr: "",
+          gate: "",
+          c1Name: "",
+          c1Tel: "",
+          c2Name: "",
+          c2Tel: "",
+          medical: ""
+        }
+      };
+
+      function showToast(msg) {
+        const el = document.getElementById("toast");
+        el.textContent = msg;
+        el.classList.add("show");
+        clearTimeout(showToast._timer);
+        showToast._timer = setTimeout(() => el.classList.remove("show"), 1800);
+      }
+
+      async function copyText(text, label = "已复制") {
+        if (!text || !text.trim()) {
+          showToast("暂无可复制内容");
+          return;
+        }
+        try {
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            await navigator.clipboard.writeText(text);
+          } else {
+            const ta = document.createElement("textarea");
+            ta.value = text;
+            ta.style.position = "fixed";
+            ta.style.opacity = "0";
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand("copy");
+            document.body.removeChild(ta);
+          }
+          showToast(label);
+        } catch (err) {
+          showToast("复制失败，请手动长按复制");
+        }
+      }
+
+      function loadProfile() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (raw) {
+            const parsed = JSON.parse(raw);
+            state.profile = Object.assign({}, state.profile, parsed);
+          }
+        } catch (e) {}
+      }
+
+      function saveProfile() {
+        state.profile = {
+          addr: document.getElementById("pf-addr").value.trim(),
+          gate: document.getElementById("pf-gate").value.trim(),
+          c1Name: document.getElementById("pf-c1-name").value.trim(),
+          c1Tel: document.getElementById("pf-c1-tel").value.trim(),
+          c2Name: document.getElementById("pf-c2-name").value.trim(),
+          c2Tel: document.getElementById("pf-c2-tel").value.trim(),
+          medical: document.getElementById("pf-medical").value.trim()
+        };
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(state.profile));
+        } catch (e) {}
+        renderProfileUI();
+        updateScripts();
+        showToast("家庭档案已保存");
+      }
+
+      function renderProfileUI() {
+        document.getElementById("pf-addr").value = state.profile.addr;
+        document.getElementById("pf-gate").value = state.profile.gate;
+        document.getElementById("pf-c1-name").value = state.profile.c1Name;
+        document.getElementById("pf-c1-tel").value = state.profile.c1Tel;
+        document.getElementById("pf-c2-name").value = state.profile.c2Name;
+        document.getElementById("pf-c2-tel").value = state.profile.c2Tel;
+        document.getElementById("pf-medical").value = state.profile.medical;
+
+        const quickEl = document.getElementById("home-quick-card");
+        if (state.profile.addr || state.profile.gate) {
+          quickEl.innerHTML =
+            "<div><strong>地址：</strong>" + escapeHtml(state.profile.addr || "未填写") + "</div>" +
+            (state.profile.gate ? "<div style='margin-top:4px;color:var(--muted);'><strong>入口指引：</strong>" + escapeHtml(state.profile.gate) + "</div>" : "");
+        } else {
+          quickEl.textContent = "暂无预存地址，请前往底部「家庭档案」填写保存。";
+        }
+
+        const listEl = document.getElementById("emergency-contacts-list");
+        const contacts = [];
+        if (state.profile.c1Name || state.profile.c1Tel) {
+          contacts.push({ name: state.profile.c1Name || "紧急联系人 1", tel: state.profile.c1Tel });
+        }
+        if (state.profile.c2Name || state.profile.c2Tel) {
+          contacts.push({ name: state.profile.c2Name || "紧急联系人 2", tel: state.profile.c2Tel });
+        }
+
+        if (!contacts.length) {
+          listEl.innerHTML = "<div style='font-size:13px;color:var(--muted);'>尚未添加紧急联系人。</div>";
+          return;
+        }
+
+        listEl.innerHTML = contacts.map((c) => {
+          const cleanTel = (c.tel || "").replace(/[^\d+]/g, "");
+          return (
+            '<div class="contact-row">' +
+              '<div>' +
+                '<div style="font-weight:700;font-size:14px;">' + escapeHtml(c.name) + '</div>' +
+                '<div style="font-size:12px;color:var(--muted);">' + escapeHtml(c.tel || "未填号码") + '</div>' +
+              '</div>' +
+              '<div style="display:flex;gap:6px;">' +
+                (cleanTel ? '<a class="btn btn-sm btn-green" style="text-decoration:none;" href="tel:' + cleanTel + '">拨号</a>' : '') +
+                (c.tel ? '<button type="button" class="btn btn-sm" data-copy="' + escapeAttr(c.tel) + '">复制</button>' : '') +
+              '</div>' +
+            '</div>'
+          );
+        }).join("");
+      }
+
+      function formatProfileText() {
+        const p = state.profile;
+        return [
+          "【家庭应急档案】",
+          "家庭地址：" + (p.addr || "未填写"),
+          "入口/楼层指引：" + (p.gate || "未填写"),
+          "紧急联系人1：" + (p.c1Name || "未填") + " " + (p.c1Tel || ""),
+          "紧急联系人2：" + (p.c2Name || "未填") + " " + (p.c2Tel || ""),
+          "医疗/过敏备忘：" + (p.medical || "无")
+        ].join("\n");
+      }
+
+      function updateScripts() {
+        const addrInput = document.getElementById("script-addr");
+        const extraInput = document.getElementById("script-extra");
+        const addr = (addrInput.value || state.profile.addr || "【请补充具体地址与门牌/路口】").trim();
+        const extra = extraInput.value.trim();
+        const locPart = state.locationText ? "\n当前GPS参考：" + state.locationText : "";
+
+        const callText =
+          "您好，这里是【" + state.script.type + "】报警。\n" +
+          "事发位置：" + addr + "。" +
+          (state.profile.gate ? "（入口指引：" + state.profile.gate + "）" : "") + "\n" +
+          "人员情况：" + state.script.trapped + "。\n" +
+          "现场特征：" + state.script.risk + "。" +
+          (extra ? "\n补充说明：" + extra + "。" : "") +
+          locPart;
+
+        const nowStr = new Date().toLocaleTimeString("zh-CN", { hour: "2-digit", minute: "2-digit" });
+        const syncText =
+          "【家庭应急同步｜" + nowStr + "】\n" +
+          "情况：" + state.script.type + " | " + state.script.trapped + "\n" +
+          "位置：" + addr + "\n" +
+          "要点：" + state.script.risk + (extra ? "；" + extra : "") +
+          (state.locationText ? "\n定位：" + state.locationText : "");
+
+        document.getElementById("output-call-script").textContent = callText;
+        document.getElementById("output-family-sync").textContent = syncText;
+      }
+
+      function switchTab(tabName) {
+        if (!["call", "script", "profile", "cards"].includes(tabName)) return;
+        state.tab = tabName;
+        document.querySelectorAll(".tab-panel").forEach((el) => {
+          el.classList.toggle("active", el.id === "panel-" + tabName);
+        });
+        document.querySelectorAll(".nav-btn").forEach((btn) => {
+          btn.classList.toggle("active", btn.getAttribute("data-tab") === tabName);
+        });
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      function getLocation() {
+        const display = document.getElementById("loc-display");
+        if (!navigator.geolocation) {
+          display.textContent = "当前浏览器不支持定位接口，请手动输入或使用预存家庭地址。";
+          return;
+        }
+        display.textContent = "正在获取当前 GPS 定位，请稍候…";
+        navigator.geolocation.getCurrentPosition(
+          (pos) => {
+            const lat = pos.coords.latitude.toFixed(6);
+            const lng = pos.coords.longitude.toFixed(6);
+            const acc = Math.round(pos.coords.accuracy || 0);
+            const mapLink = "https://uri.amap.com/marker?position=" + lng + "," + lat + "&name=求助位置";
+            state.locationText = "纬度 " + lat + ", 经度 " + lng + "（误差约" + acc + "米）高德地图：" + mapLink;
+            display.innerHTML =
+              "<div><strong>经纬度：</strong>" + lat + ", " + lng + "（精度约 " + acc + "m）</div>" +
+              "<div style='margin-top:4px;'><a href='" + mapLink + "' target='_blank' rel='noopener' style='color:var(--blue);font-weight:700;'>在高德地图中打开位置</a></div>";
+            updateScripts();
+            showToast("定位已获取");
+          },
+          (err) => {
+            display.textContent = "定位未成功（" + (err.message || "请检查定位权限或网络") + "）。建议在「家庭档案」提前填好家庭地址。";
+            showToast("定位获取失败");
+          },
+          { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+        );
+      }
+
+      function renderCartoonSvg(artType) {
+        const palettes = {
+          pan: { bg: "#fff1f2", main: "#e11d48", accent: "#f59e0b", tag: "油锅盖盖" },
+          gas: { bg: "#fef9c3", main: "#ca8a04", accent: "#ef4444", tag: "关阀开窗" },
+          smoke: { bg: "#fef3c7", main: "#d97706", accent: "#3b82f6", tag: "低姿弯腰" },
+          burn: { bg: "#cffafe", main: "#0891b2", accent: "#ef4444", tag: "冷水冲20分" },
+          choke: { bg: "#dcfce7", main: "#16a34a", accent: "#ea580c", tag: "海姆立克" },
+          ext: { bg: "#fee2e2", main: "#dc2626", accent: "#111827", tag: "提拔握压" },
+          battery: { bg: "#ffedd5", main: "#ea580c", accent: "#10b981", tag: "远离烟气" },
+          nose: { bg: "#fce7f3", main: "#db2777", accent: "#2563eb", tag: "微低头捏鼻" }
+        };
+        const p = palettes[artType] || palettes.pan;
+        return (
+          '<svg class="safety-illus" viewBox="0 0 360 138" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="' + escapeAttr(p.tag) + '卡通插画">' +
+            '<rect width="360" height="138" fill="' + p.bg + '" />' +
+            '<circle cx="52" cy="30" r="22" fill="#ffffff" opacity="0.7" />' +
+            '<circle cx="315" cy="108" r="32" fill="#ffffff" opacity="0.6" />' +
+            '<circle cx="120" cy="70" r="34" fill="' + p.main + '" opacity="0.14" />' +
+            '<circle cx="120" cy="48" r="15" fill="#fde68a" stroke="#1e293b" stroke-width="2.5" />' +
+            '<circle cx="115" cy="47" r="2" fill="#1e293b" />' +
+            '<circle cx="125" cy="47" r="2" fill="#1e293b" />' +
+            '<path d="M115 53 Q120 57 125 53" stroke="#1e293b" stroke-width="2" fill="none" stroke-linecap="round" />' +
+            '<path d="M102 88 Q120 64 138 88 Z" fill="' + p.main + '" stroke="#1e293b" stroke-width="2.5" />' +
+            '<rect x="165" y="42" width="142" height="54" rx="14" fill="#ffffff" stroke="' + p.main + '" stroke-width="2.5" />' +
+            '<circle cx="186" cy="69" r="9" fill="' + p.accent + '" />' +
+            '<text x="203" y="74" font-size="16" font-weight="700" fill="#101828" font-family="PingFang SC, Microsoft YaHei, sans-serif">' + escapeHtml(p.tag) + '</text>' +
+            '<text x="165" y="118" font-size="11" font-weight="700" fill="#475467" font-family="PingFang SC, Microsoft YaHei, sans-serif">家庭安全卡通图卡 · 可一键生成群分享海报</text>' +
+          '</svg>'
+        );
+      }
+
+      function renderCards() {
+        const container = document.getElementById("cards-container");
+        const list = state.category === "全部"
+          ? SAFETY_CARDS
+          : SAFETY_CARDS.filter((item) => item.cat === state.category);
+
+        container.innerHTML = list.map((c) => {
+          const doHtml = c.doList.map((d) => '<div class="do-item">✓ ' + escapeHtml(d) + '</div>').join("");
+          const dontHtml = c.dontList.map((d) => '<div class="dont-item">✕ ' + escapeHtml(d) + '</div>').join("");
+          return (
+            '<article class="safety-card">' +
+              renderCartoonSvg(c.artType) +
+              '<div class="safety-body">' +
+                '<span class="safety-cat">' + escapeHtml(c.cat) + '</span>' +
+                '<h3 class="safety-title">' + escapeHtml(c.title) + '</h3>' +
+                '<div class="safety-slogan">口诀：' + escapeHtml(c.slogan) + '</div>' +
+                doHtml +
+                dontHtml +
+                '<div class="card-actions">' +
+                  '<button type="button" class="btn btn-sm btn-primary" data-gen-poster="' + escapeAttr(c.id) + '">🖼️ 生成群分享图</button>' +
+                  '<button type="button" class="btn btn-sm" data-copy-card="' + escapeAttr(c.id) + '">复制口诀</button>' +
+                '</div>' +
+              '</div>' +
+            '</article>'
+          );
+        }).join("");
+      }
+
+      function wrapCanvasText(ctx, text, x, y, maxWidth, lineHeight) {
+        const chars = Array.from(text);
+        let line = "";
+        let curY = y;
+        for (let i = 0; i < chars.length; i++) {
+          const testLine = line + chars[i];
+          if (ctx.measureText(testLine).width > maxWidth && line.length > 0) {
+            ctx.fillText(line, x, curY);
+            line = chars[i];
+            curY += lineHeight;
+          } else {
+            line = testLine;
+          }
+        }
+        if (line) {
+          ctx.fillText(line, x, curY);
+          curY += lineHeight;
+        }
+        return curY;
+      }
+
+      function generatePosterDataUrl(card) {
+        const canvas = document.createElement("canvas");
+        canvas.width = 750;
+        canvas.height = 1160;
+        const ctx = canvas.getContext("2d");
+
+        ctx.fillStyle = "#fffdf9";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        ctx.fillStyle = "#d92d20";
+        ctx.fillRect(0, 0, canvas.width, 136);
+
+        ctx.fillStyle = "#ffffff";
+        ctx.font = "bold 34px PingFang SC, Microsoft YaHei, sans-serif";
+        ctx.fillText("家庭应急安全常识 · 群分享卡片", 36, 62);
+        ctx.font = "22px PingFang SC, Microsoft YaHei, sans-serif";
+        ctx.fillText("分类：" + card.cat + "   |   关键时刻不慌乱", 36, 104);
+
+        ctx.fillStyle = "#fff4ed";
+        ctx.fillRect(36, 168, 678, 176);
+        ctx.strokeStyle = "#fdba74";
+        ctx.lineWidth = 3;
+        ctx.strokeRect(36, 168, 678, 176);
+
+        ctx.fillStyle = "#101828";
+        ctx.font = "bold 36px PingFang SC, Microsoft YaHei, sans-serif";
+        let y = wrapCanvasText(ctx, card.title, 60, 222, 630, 46);
+
+        ctx.fillStyle = "#b42318";
+        ctx.font = "bold 25px PingFang SC, Microsoft YaHei, sans-serif";
+        wrapCanvasText(ctx, "核心口诀：" + card.slogan, 60, Math.max(y + 6, 282), 630, 36);
+
+        y = 386;
+        ctx.fillStyle = "#067647";
+        ctx.font = "bold 28px PingFang SC, Microsoft YaHei, sans-serif";
+        ctx.fillText("✓ 正确做法", 44, y);
+        y += 42;
+        ctx.fillStyle = "#1d2939";
+        ctx.font = "24px PingFang SC, Microsoft YaHei, sans-serif";
+        card.doList.forEach((item) => {
+          y = wrapCanvasText(ctx, "• " + item, 56, y, 636, 35) + 8;
+        });
+
+        y += 14;
+        ctx.fillStyle = "#b42318";
+        ctx.font = "bold 28px PingFang SC, Microsoft YaHei, sans-serif";
+        ctx.fillText("✕ 千万别做", 44, y);
+        y += 42;
+        ctx.fillStyle = "#7a271a";
+        ctx.font = "24px PingFang SC, Microsoft YaHei, sans-serif";
+        card.dontList.forEach((item) => {
+          y = wrapCanvasText(ctx, "• " + item, 56, y, 636, 35) + 8;
+        });
+
+        ctx.fillStyle = "#f2f4f7";
+        ctx.fillRect(36, 980, 678, 136);
+        ctx.fillStyle = "#344054";
+        ctx.font = "bold 22px PingFang SC, Microsoft YaHei, sans-serif";
+        ctx.fillText("紧急电话：火警 119 ｜ 报警 110 ｜ 急救 120", 58, 1026);
+        ctx.font = "20px PingFang SC, Microsoft YaHei, sans-serif";
+        ctx.fillStyle = "#667085";
+        ctx.fillText("手机长按本图可保存至相册，直接发送到家庭微信群", 58, 1064);
+        ctx.fillText("页面地址：" + (window.location.href || "家庭应急报警助手"), 58, 1096);
+
+        return canvas.toDataURL("image/png");
+      }
+
+      function openPosterModal(cardId) {
+        const card = SAFETY_CARDS.find((c) => c.id === cardId);
+        if (!card) return;
+        const dataUrl = generatePosterDataUrl(card);
+        const modal = document.getElementById("modal-backdrop");
+        document.getElementById("modal-title").textContent = "群分享海报：" + card.title;
+        document.getElementById("modal-body").innerHTML =
+          '<div style="font-size:12px;color:var(--muted);">手机端可直接<strong>长按下方图片</strong>存入相册，发到家庭群；电脑端可点击下载。</div>' +
+          '<img class="poster-preview-img" src="' + dataUrl + '" alt="' + escapeAttr(card.title) + '安全海报" />' +
+          '<div style="display:flex;gap:8px;flex-wrap:wrap;">' +
+            '<a class="btn btn-primary" style="text-decoration:none;" download="' + escapeAttr(card.id) + '-安全海报.png" href="' + dataUrl + '">⬇️ 下载 PNG 图片</a>' +
+            '<button type="button" class="btn btn-blue" data-copy="' + escapeAttr(window.location.href || "") + '">复制当前页面链接</button>' +
+            '<button type="button" class="btn" data-copy-card="' + escapeAttr(card.id) + '">复制卡片文字</button>' +
+          '</div>';
+        modal.classList.add("open");
+      }
+
+      function closeModal() {
+        document.getElementById("modal-backdrop").classList.remove("open");
+      }
+
+      function escapeHtml(str) {
+        return String(str || "")
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;");
+      }
+
+      function escapeAttr(str) {
+        return escapeHtml(str).replace(/'/g, "&#39;");
+      }
+
+      function bindEvents() {
+        document.querySelector(".bottom-nav").addEventListener("click", (e) => {
+          const btn = e.target.closest(".nav-btn");
+          if (btn) switchTab(btn.getAttribute("data-tab"));
+        });
+
+        document.addEventListener("click", (e) => {
+          const gotoBtn = e.target.closest("[data-goto-tab]");
+          if (gotoBtn) {
+            switchTab(gotoBtn.getAttribute("data-goto-tab"));
+            return;
+          }
+
+          const copyBtn = e.target.closest("[data-copy]");
+          if (copyBtn) {
+            copyText(copyBtn.getAttribute("data-copy"), "已复制到剪贴板");
+            return;
+          }
+
+          const posterBtn = e.target.closest("[data-gen-poster]");
+          if (posterBtn) {
+            openPosterModal(posterBtn.getAttribute("data-gen-poster"));
+            return;
+          }
+
+          const copyCardBtn = e.target.closest("[data-copy-card]");
+          if (copyCardBtn) {
+            const c = SAFETY_CARDS.find((item) => item.id === copyCardBtn.getAttribute("data-copy-card"));
+            if (c) {
+              const txt =
+                "【" + c.cat + "·" + c.title + "】\n" +
+                "口诀：" + c.slogan + "\n" +
+                "做法：" + c.doList.join("；") + "\n" +
+                "禁忌：" + c.dontList.join("；");
+              copyText(txt, "已复制卡片内容");
+            }
+          }
+        });
+
+        function bindChipGroup(groupId, keyName) {
+          const group = document.getElementById(groupId);
+          group.addEventListener("click", (e) => {
+            const chip = e.target.closest(".chip");
+            if (!chip) return;
+            group.querySelectorAll(".chip").forEach((el) => el.classList.remove("active"));
+            chip.classList.add("active");
+            state.script[keyName] = chip.getAttribute("data-val");
+            updateScripts();
+          });
+        }
+
+        bindChipGroup("chips-type", "type");
+        bindChipGroup("chips-trapped", "trapped");
+        bindChipGroup("chips-risk", "risk");
+
+        document.getElementById("script-addr").addEventListener("input", updateScripts);
+        document.getElementById("script-extra").addEventListener("input", updateScripts);
+
+        document.getElementById("btn-copy-call-script").addEventListener("click", () => {
+          copyText(document.getElementById("output-call-script").textContent, "已复制报警口播稿");
+        });
+
+        document.getElementById("btn-copy-family-sync").addEventListener("click", () => {
+          copyText(document.getElementById("output-family-sync").textContent, "已复制家人同步简报");
+        });
+
+        document.getElementById("btn-get-loc").addEventListener("click", getLocation);
+        document.getElementById("btn-copy-loc").addEventListener("click", () => {
+          copyText(state.locationText || state.profile.addr, "已复制位置信息");
+        });
+        document.getElementById("btn-use-home-addr").addEventListener("click", () => {
+          if (!state.profile.addr) {
+            showToast("请先在家庭档案填写地址");
+            switchTab("profile");
+            return;
+          }
+          document.getElementById("script-addr").value = state.profile.addr;
+          updateScripts();
+          showToast("已填入预存家庭地址");
+        });
+
+        document.getElementById("btn-save-profile").addEventListener("click", saveProfile);
+        document.getElementById("btn-copy-profile").addEventListener("click", () => {
+          copyText(formatProfileText(), "已复制完整家庭档案");
+        });
+
+        document.getElementById("card-filters").addEventListener("click", (e) => {
+          const chip = e.target.closest(".chip");
+          if (!chip) return;
+          document.querySelectorAll("#card-filters .chip").forEach((el) => el.classList.remove("active"));
+          chip.classList.add("active");
+          state.category = chip.getAttribute("data-cat");
+          renderCards();
+        });
+
+        document.getElementById("btn-close-modal").addEventListener("click", closeModal);
+        document.getElementById("modal-backdrop").addEventListener("click", (e) => {
+          if (e.target.id === "modal-backdrop") closeModal();
+        });
+      }
+
+      loadProfile();
+      bindEvents();
+      renderProfileUI();
+      updateScripts();
+      renderCards();
+    })();
+  </script>
 </body>
 </html>

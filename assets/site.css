@@ -1,0 +1,155 @@
+/* ============================================================
+   全家平安守护中心 · 整站共享设计系统
+   所有页面共用：背景 / 字体 / 吸顶全局导航 / 页脚 / 容器宽度
+   ============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&display=swap');
+
+:root {
+  --site-brand: #f59e0b;
+  --site-brand-deep: #b45309;
+  --site-line: #e2e8f0;
+  --site-muted: #64748b;
+}
+
+html { -webkit-text-size-adjust: 100%; }
+
+body.site {
+  margin: 0;
+  font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  background:
+    radial-gradient(circle at 12% 8%, rgba(254, 243, 199, 0.75) 0%, transparent 42%),
+    radial-gradient(circle at 88% 12%, rgba(220, 252, 231, 0.55) 0%, transparent 40%),
+    linear-gradient(180deg, #fffdf7 0%, #f6f8fb 100%);
+  background-attachment: fixed;
+  color: #0f172a;
+  overflow-x: hidden;
+}
+
+/* ---- 统一容器宽度 ---- */
+.site-shell {
+  max-width: 56rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+/* ---- 吸顶全局导航 ---- */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--site-line);
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+}
+.site-header .bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1rem;
+  height: 3.5rem;
+}
+.site-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-width: 0;
+  text-decoration: none;
+}
+.site-logo {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff7ed;
+  border: 1px solid #fed7aa;
+  color: #ea580c;
+  flex: none;
+}
+.site-brand-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.site-name {
+  font-size: 0.9rem;
+  font-weight: 900;
+  color: #0f172a;
+  line-height: 1.25;
+  white-space: nowrap;
+}
+.site-sub {
+  font-size: 0.68rem;
+  color: var(--site-muted);
+  line-height: 1.25;
+  white-space: nowrap;
+}
+@media (max-width: 560px) {
+  .site-sub { display: none; }
+}
+.site-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.15rem;
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.site-nav::-webkit-scrollbar { display: none; }
+.site-nav a {
+  padding: 0.4rem 0.6rem;
+  border-radius: 0.65rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #475569;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.site-nav a:hover { background: #f1f5f9; color: #0f172a; }
+.site-nav a.active { background: #fef3c7; color: #92400e; }
+@media (max-width: 430px) {
+  .site-nav a { padding: 0.35rem 0.45rem; font-size: 0.7rem; }
+}
+
+/* ---- 统一页脚 ---- */
+.site-footer {
+  margin-top: 2.5rem;
+  border-top: 1px solid var(--site-line);
+  background: rgba(255, 255, 255, 0.85);
+}
+.site-footer .inner {
+  max-width: 56rem;
+  margin: 0 auto;
+  padding: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem 1rem;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.72rem;
+  color: var(--site-muted);
+}
+.emg-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+.emg-chip {
+  padding: 0.3rem 0.6rem;
+  border-radius: 0.6rem;
+  font-weight: 800;
+  font-size: 0.7rem;
+  text-decoration: none;
+  white-space: nowrap;
+  border: 1px solid transparent;
+}
+.emg-chip.rose    { background: #fef2f2; color: #b91c1c; border-color: #fecaca; }
+.emg-chip.sky     { background: #eff6ff; color: #1d4ed8; border-color: #bfdbfe; }
+.emg-chip.orange  { background: #fff7ed; color: #c2410c; border-color: #fed7aa; }
+.emg-chip.emerald { background: #ecfdf5; color: #047857; border-color: #a7f3d0; }
