@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>家庭平安出行 · 机长起飞前检查单</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&display=swap');
+    body {
+      font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: linear-gradient(180deg, #fffbeb 0%, #f8fafc 45%, #f1f5f9 100%);
+      color: #0f172a;
+      overflow-x: hidden;
+      padding-bottom: 96px;
+    }
+    .elder-mode {
+      background: #090d16 !important;
+      color: #facc15 !important;
+    }
+    .elder-mode .panel-surface {
+      background: #111827 !important;
+      color: #fef08a !important;
+      border-color: #eab308 !important;
+    }
+    .elder-mode .muted-text {
+      color: #fde047 !important;
+    }
+    .elder-mode .check-card {
+      background: #172033 !important;
+      border-color: #facc15 !important;
+      color: #fef9c3 !important;
+    }
+    .elder-mode .check-card.checked {
+      background: #064e3b !important;
+      border-color: #34d399 !important;
+    }
+    @keyframes pulseFlash {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.55); transform: scale(1); }
+      50% { box-shadow: 0 0 0 12px rgba(239, 68, 68, 0); transform: scale(1.015); }
+    }
+    .highlight-missing {
+      animation: pulseFlash 1.1s ease-in-out 2;
+      border-color: #ef4444 !important;
+    }
+  </style>
+</head>
+<body class="min-h-screen">
+  <!-- 顶部导航（严格两排、零横向溢出、零左右滑动） -->
+  <header class="sticky top-0 z-30 bg-white/95 backdrop-blur border-b border-slate-200 shadow-sm panel-surface">
+    <div class="max-w-4xl mx-auto px-3 py-2.5 flex flex-col gap-2">
+      <!-- 第一行：品牌与模式控制 -->
+      <div class="flex items-center justify-between gap-2">
+        <div class="flex items-center gap-2 min-w-0">
+          <a href="index.html" class="shrink-0 px-2.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-black">
+            ← 总入口
+          </a>
+          <div class="min-w-0">
+            <h1 class="text-base sm:text-lg font-black truncate">✈️ 家庭平安出行检查单</h1>
+          </div>
+        </div>
+        <div class="flex items-center gap-1.5 shrink-0">
+          <button onclick="openTripProfileModal()" class="px-2.5 py-1.5 rounded-xl bg-sky-100 hover:bg-sky-200 text-sky-800 text-xs font-bold">
+            行程/车险
+          </button>
+          <button onclick="toggleElderMode()" id="btn-elder" class="px-2.5 py-1.5 rounded-xl bg-amber-100 hover:bg-amber-200 text-amber-900 text-xs font-bold">
+            长辈大字
+          </button>
+        </div>
+      </div>
+
+      <!-- 第二行：主视角与场景切换网格（两排/多列自适应换行，绝不横向滚动） -->
+      <div class="grid grid-cols-2 sm:grid-cols-5 gap-1.5 text-xs font-black">
+        <button id="role-captain" onclick="switchRole('captain')" class="py-2 px-2 rounded-xl bg-amber-500 text-white text-center truncate">
+          👨‍✈️ 机长清单
+        </button>
+        <button id="role-copilot" onclick="switchRole('copilot')" class="py-2 px-2 rounded-xl bg-slate-100 text-slate-700 text-center truncate">
+          🧭 副驾职责
+        </button>
+        <button id="scene-depart" onclick="switchScene('depart')" class="py-2 px-2 rounded-xl bg-emerald-600 text-white text-center truncate">
+          🚦 出发前
+        </button>
+        <button id="scene-highway" onclick="switchScene('highway')" class="py-2 px-2 rounded-xl bg-slate-100 text-slate-700 text-center truncate">
+          🛣️ 高速法则
+        </button>
+        <button id="scene-rest" onclick="switchScene('rest')" class="col-span-2 sm:col-span-1 py-2 px-2 rounded-xl bg-slate-100 text-slate-700 text-center truncate">
+          ☕ 途中休整
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-4xl mx-auto px-3 pt-3 space-y-3">
+    <!-- 行程状态与语音领读条 -->
+    <section class="panel-surface bg-white rounded-2xl p-3.5 border border-slate-200 shadow-sm flex flex-col gap-2.5">
+      <div class="flex flex-wrap items-center justify-between gap-2">
+        <div class="text-xs sm:text-sm font-bold muted-text">
+          机长：<span id="info-captain" class="text-amber-700 font-black">爸爸</span> ·
+          目的地：<span id="info-dest" class="text-slate-900 font-black">全家团圆之旅</span>
+        </div>
+        <div id="progress-label" class="text-xs font-black px-2.5 py-1 rounded-full bg-amber-100 text-amber-800">
+          已确认 0 / 0 项
+        </div>
+      </div>
+
+      <div class="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden">
+        <div id="progress-bar" class="h-full bg-gradient-to-r from-amber-400 to-emerald-500 transition-all duration-300" style="width: 0%"></div>
+      </div>
+
+      <div class="flex flex-wrap items-center justify-between gap-2 pt-0.5">
+        <div class="flex flex-wrap items-center gap-1.5">
+          <button onclick="readAllChecklist()" class="px-3 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-xs font-black">
+            🔊 全单顺序领读
+          </button>
+          <button onclick="stopSpeech()" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold">
+            ⏹ 停止朗读
+          </button>
+          <button onclick="toggleSpeechRate()" id="btn-rate" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold">
+            语速：正常
+          </button>
+        </div>
+        <span class="text-[11px] muted-text">连上车机蓝牙可直接车内播报</span>
+      </div>
+    </section>
+
+    <!-- 高速保命九字诀横幅 -->
+    <section class="rounded-2xl bg-rose-600 text-white p-3.5 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+      <div>
+        <div class="text-xs font-bold text-rose-100">高速突发状况保命口诀</div>
+        <div class="text-base sm:text-lg font-black tracking-wide">车靠边 · 人撤离 · 即报警（12122）</div>
+      </div>
+      <button onclick="openSosModal()" class="px-3.5 py-2 rounded-xl bg-white text-rose-700 font-black text-xs shrink-0 self-start sm:self-auto">
+        查看应急定位与保险
+      </button>
+    </section>
+
+    <!-- 检查清单列表 -->
+    <section id="checklist-container" class="space-y-2.5"></section>
+
+    <!-- 底部生成出发通行证按钮 -->
+    <section class="panel-surface bg-white rounded-2xl p-4 border border-slate-200 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-3">
+      <div>
+        <div class="text-sm font-black">副驾读完、机长确认后</div>
+        <div class="text-xs muted-text">生成家庭群报平安登机牌/旅行海报，支持三款风格切换</div>
+      </div>
+      <button onclick="handleGeneratePass()" class="w-full sm:w-auto px-5 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-black text-sm shadow">
+        🎫 生成平安出发通行证
+      </button>
+    </section>
+  </main>
+
+  <!-- 平安盲盒签：固定在左下角，避免遮挡右下角操作区 -->
+  <button onclick="openBlindBox()" title="抽取今日行车平安签"
+    class="fixed left-3 bottom-4 z-40 px-3.5 py-2.5 rounded-2xl bg-gradient-to-r from-amber-400 to-orange-500 text-slate-950 font-black text-xs sm:text-sm shadow-lg border-2 border-white flex items-center gap-1.5">
+    <span>🎁</span>
+    <span>平安盲盒签</span>
+  </button>
+
+  <!-- 盲盒签弹窗 -->
+  <div id="blindbox-modal" class="hidden fixed inset-0 z-50 bg-slate-900/60 flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full p-5 shadow-2xl space-y-3">
+      <div class="flex items-center justify-between">
+        <span class="px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800 text-xs font-black">🎁 今日行车平安签</span>
+        <button onclick="closeModal('blindbox-modal')" class="text-slate-400 hover:text-slate-700 font-black text-lg">✕</button>
+      </div>
+      <div id="blindbox-quote" class="text-lg font-black text-slate-900 leading-snug bg-amber-50 p-3.5 rounded-2xl border border-amber-200"></div>
+      <p id="blindbox-detail" class="text-xs sm:text-sm text-slate-600 leading-relaxed"></p>
+      <div class="flex gap-2 pt-1">
+        <button onclick="drawBlindBoxQuote()" class="flex-1 py-2.5 rounded-xl bg-amber-500 text-white font-black text-xs">再抽一张</button>
+        <button onclick="closeModal('blindbox-modal')" class="px-4 py-2.5 rounded-xl bg-slate-100 text-slate-700 font-bold text-xs">收下平安</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 行程与车险档案弹窗 -->
+  <div id="profile-modal" class="hidden fixed inset-0 z-50 bg-slate-900/60 flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full p-5 shadow-2xl space-y-3 max-h-[88vh] overflow-y-auto">
+      <div class="flex items-center justify-between">
+        <h3 class="font-black text-base">📝 行程记忆 & 车险应急档案</h3>
+        <button onclick="closeModal('profile-modal')" class="text-slate-400 font-black">✕</button>
+      </div>
+      <div class="space-y-2 text-xs">
+        <label class="block font-bold text-slate-600">机长称呼
+          <input id="inp-captain" type="text" class="mt-1 w-full px-3 py-2 rounded-xl border border-slate-300" placeholder="例如：爸爸 / 老公 / 妈妈" />
+        </label>
+        <label class="block font-bold text-slate-600">目的地
+          <input id="inp-dest" type="text" class="mt-1 w-full px-3 py-2 rounded-xl border border-slate-300" placeholder="例如：老家 / 环湖自驾" />
+        </label>
+        <label class="block font-bold text-slate-600">车牌号或车型
+          <input id="inp-car" type="text" class="mt-1 w-full px-3 py-2 rounded-xl border border-slate-300" placeholder="例如：粤A·88888 白色SUV" />
+        </label>
+        <label class="block font-bold text-slate-600">车险报案电话
+          <input id="inp-ins" type="tel" class="mt-1 w-full px-3 py-2 rounded-xl border border-slate-300" placeholder="例如：95518 / 95519" />
+        </label>
+        <label class="block font-bold text-slate-600">家人紧急联系人电话
+          <input id="inp-fam" type="tel" class="mt-1 w-full px-3 py-2 rounded-xl border border-slate-300" placeholder="例如：13800138000" />
+        </label>
+      </div>
+      <button onclick="saveTripProfile()" class="w-full py-2.5 rounded-xl bg-sky-600 text-white font-black text-xs">保存到本地</button>
+    </div>
+  </div>
+
+  <!-- 应急救援弹窗 -->
+  <div id="sos-modal" class="hidden fixed inset-0 z-50 bg-slate-900/65 flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full p-5 shadow-2xl space-y-3 max-h-[88vh] overflow-y-auto">
+      <div class="flex items-center justify-between">
+        <h3 class="font-black text-base text-rose-700">🚨 道路应急救援卡</h3>
+        <button onclick="closeModal('sos-modal')" class="text-slate-400 font-black">✕</button>
+      </div>
+      <div class="grid grid-cols-3 gap-2 text-center">
+        <a href="tel:12122" class="p-2.5 rounded-2xl bg-rose-50 border border-rose-200">
+          <div class="font-black text-rose-700 text-base">12122</div>
+          <div class="text-[11px] text-rose-900">高速报警救援</div>
+        </a>
+        <a href="tel:122" class="p-2.5 rounded-2xl bg-amber-50 border border-amber-200">
+          <div class="font-black text-amber-700 text-base">122</div>
+          <div class="text-[11px] text-amber-900">交通事故报警</div>
+        </a>
+        <a href="tel:120" class="p-2.5 rounded-2xl bg-emerald-50 border border-emerald-200">
+          <div class="font-black text-emerald-700 text-base">120</div>
+          <div class="text-[11px] text-emerald-900">医疗急救</div>
+        </a>
+      </div>
+      <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200 text-xs space-y-1.5">
+        <div class="font-bold text-slate-700">当前位置坐标</div>
+        <div id="sos-loc-text" class="text-slate-600 break-all">点击下方按钮获取实时经纬度</div>
+        <div class="flex gap-2 pt-1">
+          <button onclick="fetchGpsForSos()" class="px-3 py-1.5 rounded-xl bg-sky-600 text-white font-bold">获取定位</button>
+          <button onclick="copySosText()" class="px-3 py-1.5 rounded-xl bg-slate-200 text-slate-800 font-bold">复制救援信息</button>
+        </div>
+      </div>
+      <div id="sos-custom-contacts" class="text-xs text-slate-700 bg-amber-50/70 p-3 rounded-2xl border border-amber-200"></div>
+    </div>
+  </div>
+
+  <!-- 海报生成弹窗 -->
+  <div id="poster-modal" class="hidden fixed inset-0 z-50 bg-slate-900/65 flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full p-5 shadow-2xl space-y-3 max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between">
+        <h3 class="font-black text-base">🎫 平安出发通行证海报</h3>
+        <button onclick="closeModal('poster-modal')" class="text-slate-400 font-black">✕</button>
+      </div>
+      <div class="flex gap-1.5 text-xs font-bold">
+        <button onclick="setPosterStyle('boarding')" id="style-boarding" class="flex-1 py-1.5 rounded-xl bg-slate-900 text-white">登机牌风</button>
+        <button onclick="setPosterStyle('warm')" id="style-warm" class="flex-1 py-1.5 rounded-xl bg-slate-100 text-slate-700">团圆暖心</button>
+        <button onclick="setPosterStyle('road')" id="style-road" class="flex-1 py-1.5 rounded-xl bg-slate-100 text-slate-700">公路旅行</button>
+      </div>
+      <canvas id="poster-canvas" width="600" height="840" class="w-full rounded-2xl border border-slate-200"></canvas>
+      <div class="flex gap-2">
+        <a id="download-poster-link" download="平安出发通行证.png" class="flex-1 py-2.5 rounded-xl bg-emerald-600 text-white font-black text-xs text-center">下载海报 PNG</a>
+        <button onclick="copyFamilyGreeting()" class="flex-1 py-2.5 rounded-xl bg-sky-600 text-white font-black text-xs">复制家庭群报平安文案</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const CHECKLIST_DATA = {
+      captain: {
+        depart: [
+          { id: "c_d1", title: "后视镜与座椅调节到位", tip: "后备箱年货/行李不遮挡后窗与中央后视镜，盲区降到最低。" },
+          { id: "c_d2", title: "全车人员安全带与儿童座椅二次确认", tip: "前排和后排都要系好，儿童安全座椅卡扣拉一下确认锁止。" },
+          { id: "c_d3", title: "胎压、油量/电量与玻璃水充足", tip: "出发前看一眼仪表盘，节假日高速排队前先把能源和玻璃水补满。" },
+          { id: "c_d4", title: "起步前先看周围盲区再动车", tip: "车头前、车尾后和侧面常有矮小行人或宠物，鸣笛或观察后再起步。" }
+        ],
+        highway: [
+          { id: "c_h1", title: "保持 100 米以上安全车距", tip: "节假日车流密，前车急刹时留出足够反应时间，不贴车跟行。" },
+          { id: "c_h2", title: "变道“一灯二镜三方向”，不实线强行变道", tip: "提前打转向灯看后视镜，错过出口绝不急刹或倒车，下一出口掉头。" },
+          { id: "c_h3", title: "远离大货车，不长期并行", tip: "大货车盲区大、刹车距离长，超车果断通过，不长时间开在大货车右侧。" },
+          { id: "c_h4", title: "遇突发状况牢记“车靠边、人撤离、即报警”", tip: "能移动车辆尽快靠边开双闪，全员撤离到护栏外安全地带再报警。" }
+        ],
+        rest: [
+          { id: "c_r1", title: "连续驾驶接近 2 小时或打哈欠即进服务区", tip: "别硬扛困意，下车活动、喝水或洗把脸，必要时小睡 15～20 分钟。" },
+          { id: "c_r2", title: "长途换人驾驶，交接路况与导航", tip: "接棒司机先熟悉刹车油门脚感与当前限速、天气情况。" },
+          { id: "c_r3", title: "返程高峰留足时间，不赶路开快车", tip: "晚到半小时家人依然平安团圆，稳字当头最重要。" }
+        ]
+      },
+      copilot: {
+        depart: [
+          { id: "p_d1", title: "核对目的地、途经点与导航路线", tip: "提前设好导航，提醒机长避开拥堵或施工路段。" },
+          { id: "p_d2", title: "清点证件、充电线、饮用水与晕车药", tip: "把常用物品放在副驾或扶手箱顺手处，减少开车时低头找东西。" }
+        ],
+        highway: [
+          { id: "p_h1", title: "提前 1～2 公里提醒变道与下匝道", tip: "节假日车流大，早一点提醒机长靠右准备下高速，避免临近才急变道。" },
+          { id: "p_h2", title: "留意机长状态，适时聊天或递水", tip: "发现机长打哈欠、走神或情绪急躁时，温和提醒休息或换手。" }
+        ],
+        rest: [
+          { id: "p_r1", title: "在服务区帮机长观察周边车流与盲区", tip: "进出服务区和停车时帮忙多看一眼两侧与后方。" },
+          { id: "p_r2", title: "提醒全车人上厕所、补水与系好安全带再出发", tip: "每次停车休息后重新上车，务必再次检查全员安全带。" }
+        ]
+      }
+    };
+
+    const BLIND_BOX_QUOTES = [
+      { q: "“宁等三分，不抢一秒；晚到五分钟，家人依然在等你。”", d: "节假日路上车多，少一次急变道，就多一分全家团圆的安心。" },
+      { q: "“打一个哈欠准备进服务区，打两个哈欠立刻靠边歇一歇。”", d: "疲劳驾驶反应会变慢，服务区多停 10 分钟，旅途更轻松。" },
+      { q: "“错过高速路口不可惜，下一个出口掉头依然能到家。”", d: "高速停车、倒车和急刹非常危险，顺着路线往前走最安全。" },
+      { q: "“后排系好安全带，是对全车人最温柔的保护。”", d: "急刹车或碰撞时，后排系安全带能大幅降低乘员前冲风险。" }
+    ];
+
+    let state = {
+      role: "captain",
+      scene: "depart",
+      checked: {},
+      elder: false,
+      slowRate: false,
+      posterStyle: "boarding",
+      gpsText: "",
+      profile: {
+        captain: "爸爸",
+        dest: "全家团圆之旅",
+        car: "",
+        ins: "",
+        fam: ""
+      }
+    };
+
+    function loadState() {
+      try {
+        const saved = JSON.parse(localStorage.getItem("family_trip_v2") || "{}");
+        if (saved.checked) state.checked = saved.checked;
+        if (saved.profile) state.profile = Object.assign({}, state.profile, saved.profile);
+      } catch (e) {}
+    }
+
+    function persistState() {
+      try {
+        localStorage.setItem("family_trip_v2", JSON.stringify({
+          checked: state.checked,
+          profile: state.profile
+        }));
+      } catch (e) {}
+    }
+
+    function getCurrentItems() {
+      return CHECKLIST_DATA[state.role][state.scene] || [];
+    }
+
+    function renderTopButtons() {
+      ["captain", "copilot"].forEach(r => {
+        const btn = document.getElementById("role-" + r);
+        btn.className = r === state.role
+          ? "py-2 px-2 rounded-xl bg-amber-500 text-white text-center truncate"
+          : "py-2 px-2 rounded-xl bg-slate-100 text-slate-700 text-center truncate";
+      });
+      ["depart", "highway", "rest"].forEach(s => {
+        const btn = document.getElementById("scene-" + s);
+        const activeColor = s === "depart" ? "bg-emerald-600" : s === "highway" ? "bg-sky-600" : "bg-indigo-600";
+        btn.className = (s === state.scene ? activeColor + " text-white" : "bg-slate-100 text-slate-700")
+          + (s === "rest" ? " col-span-2 sm:col-span-1 py-2 px-2 rounded-xl text-center truncate" : " py-2 px-2 rounded-xl text-center truncate");
+      });
+      document.getElementById("info-captain").textContent = state.profile.captain || "机长";
+      document.getElementById("info-dest").textContent = state.profile.dest || "平安出发";
+    }
+
+    function renderChecklist() {
+      renderTopButtons();
+      const items = getCurrentItems();
+      const container = document.getElementById("checklist-container");
+      const checkedCount = items.filter(i => !!state.checked[i.id]).length;
+
+      document.getElementById("progress-label").textContent = `本页已确认 ${checkedCount} / ${items.length} 项`;
+      const pct = items.length ? Math.round((checkedCount / items.length) * 100) : 0;
+      document.getElementById("progress-bar").style.width = pct + "%";
+
+      container.innerHTML = items.map((item, idx) => {
+        const isChecked = !!state.checked[item.id];
+        return `
+          <div id="card-${item.id}" onclick="toggleCheck('${item.id}')"
+            class="check-card ${isChecked ? "checked bg-emerald-50/90 border-emerald-400" : "bg-white border-slate-200"} cursor-pointer rounded-2xl p-3.5 sm:p-4 border-2 shadow-sm transition">
+            <div class="flex items-start justify-between gap-3">
+              <div class="flex items-start gap-2.5 min-w-0">
+                <span class="mt-0.5 w-6 h-6 rounded-full flex items-center justify-center text-xs font-black shrink-0 ${isChecked ? "bg-emerald-600 text-white" : "bg-amber-100 text-amber-800"}">
+                  ${isChecked ? "✓" : idx + 1}
+                </span>
+                <div class="min-w-0">
+                  <div class="text-sm sm:text-base font-black leading-snug ${isChecked ? "line-through text-emerald-900" : ""}">${item.title}</div>
+                  <div class="text-xs sm:text-sm muted-text text-slate-600 mt-1 leading-relaxed">${item.tip}</div>
+                </div>
+              </div>
+              <button type="button" onclick="event.stopPropagation(); speakSingle('${item.id}')"
+                class="shrink-0 px-2.5 py-1.5 rounded-xl bg-amber-100 hover:bg-amber-200 text-amber-900 text-xs font-black">
+                🔊 读一句
+              </button>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function toggleCheck(id) {
+      state.checked[id] = !state.checked[id];
+      persistState();
+      renderChecklist();
+    }
+
+    function switchRole(role) {
+      state.role = role;
+      renderChecklist();
+    }
+
+    function switchScene(scene) {
+      state.scene = scene;
+      renderChecklist();
+    }
+
+    function speakText(text) {
+      if (!("speechSynthesis" in window)) return;
+      window.speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = "zh-CN";
+      u.rate = state.slowRate ? 0.85 : 1.05;
+      window.speechSynthesis.speak(u);
+    }
+
+    function speakSingle(id) {
+      const all = Object.values(CHECKLIST_DATA).flatMap(m => Object.values(m).flat());
+      const found = all.find(x => x.id === id);
+      if (found) speakText(`${found.title}。${found.tip}`);
+    }
+
+    function readAllChecklist() {
+      const items = getCurrentItems();
+      if (!items.length) return;
+      const merged = items.map((it, i) => `第${i + 1}条，${it.title}。${it.tip}`).join("；");
+      speakText(merged);
+    }
+
+    function stopSpeech() {
+      if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+    }
+
+    function toggleSpeechRate() {
+      state.slowRate = !state.slowRate;
+      document.getElementById("btn-rate").textContent = state.slowRate ? "语速：稍慢" : "语速：正常";
+    }
+
+    function toggleElderMode() {
+      state.elder = !state.elder;
+      document.body.classList.toggle("elder-mode", state.elder);
+      document.body.classList.toggle("text-lg", state.elder);
+      document.getElementById("btn-elder").textContent = state.elder ? "标准模式" : "长辈大字";
+    }
+
+    function handleGeneratePass() {
+      const items = getCurrentItems();
+      const missing = items.find(i => !state.checked[i.id]);
+      if (missing) {
+        const el = document.getElementById("card-" + missing.id);
+        if (el) {
+          el.scrollIntoView({ behavior: "smooth", block: "center" });
+          el.classList.remove("highlight-missing");
+          void el.offsetWidth;
+          el.classList.add("highlight-missing");
+        }
+        speakText(`还有一项未确认：${missing.title}`);
+        return;
+      }
+      drawPoster();
+      document.getElementById("poster-modal").classList.remove("hidden");
+    }
+
+    function setPosterStyle(style) {
+      state.posterStyle = style;
+      ["boarding", "warm", "road"].forEach(s => {
+        document.getElementById("style-" + s).className = s === style
+          ? "flex-1 py-1.5 rounded-xl bg-slate-900 text-white"
+          : "flex-1 py-1.5 rounded-xl bg-slate-100 text-slate-700";
+      });
+      drawPoster();
+    }
+
+    function drawPoster() {
+      const canvas = document.getElementById("poster-canvas");
+      const ctx = canvas.getContext("2d");
+      const styles = {
+        boarding: { bg: "#fffbeb", head: "#0f172a", accent: "#f59e0b", sub: "BOARDING PASS · 平安出发登机牌" },
+        warm: { bg: "#fff1f2", head: "#be123c", accent: "#fb7185", sub: "FAMILY TRIP · 全家团圆暖心出发" },
+        road: { bg: "#f0fdf4", head: "#065f46", accent: "#10b981", sub: "ROAD TRIP · 公路安全旅行通行证" }
+      };
+      const st = styles[state.posterStyle] || styles.boarding;
+      ctx.fillStyle = st.bg;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = st.head;
+      ctx.fillRect(0, 0, canvas.width, 150);
+
+      ctx.fillStyle = "#ffffff";
+      ctx.font = "bold 32px sans-serif";
+      ctx.fillText("家庭平安出行 · 出发通行证", 36, 68);
+      ctx.fillStyle = st.accent;
+      ctx.font = "bold 20px sans-serif";
+      ctx.fillText(st.sub, 36, 112);
+
+      const totalConfirmed = Object.values(state.checked).filter(Boolean).length;
+      const nowStr = new Date().toLocaleDateString("zh-CN");
+      ctx.fillStyle = "#0f172a";
+      ctx.font = "bold 26px sans-serif";
+      ctx.fillText(`机长：${state.profile.captain || "爸爸"}`, 42, 220);
+      ctx.fillText(`目的地：${state.profile.dest || "幸福目的地"}`, 42, 270);
+      ctx.fillText(`出发日期：${nowStr}`, 42, 320);
+      ctx.fillText(`已确认安全项：${totalConfirmed} 项`, 42, 370);
+      if (state.profile.car) {
+        ctx.font = "22px sans-serif";
+        ctx.fillText(`车辆信息：${state.profile.car}`, 42, 420);
+      }
+
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(42, 470, 516, 190);
+      ctx.strokeStyle = st.accent;
+      ctx.lineWidth = 3;
+      ctx.strokeRect(42, 470, 516, 190);
+
+      ctx.fillStyle = "#0f172a";
+      ctx.font = "bold 24px sans-serif";
+      ctx.fillText("全家平安寄语", 66, 515);
+      ctx.font = "21px sans-serif";
+      ctx.fillStyle = "#334155";
+      ctx.fillText("安全清单已逐条确认，慢一点、稳一点，", 66, 560);
+      ctx.fillText("一路风景美好，全家人平平安安抵达！", 66, 598);
+
+      ctx.fillStyle = "#64748b";
+      ctx.font = "18px sans-serif";
+      ctx.fillText("车靠边 · 人撤离 · 即报警（高速 12122 / 急救 120）", 42, 740);
+
+      document.getElementById("download-poster-link").href = canvas.toDataURL("image/png");
+    }
+
+    function copyFamilyGreeting() {
+      const txt = `【平安出发报平安】机长：${state.profile.captain || "爸爸"}，目的地：${state.profile.dest || "目的地"}。出发前安全清单已确认，全员系好安全带，一路平安！`;
+      navigator.clipboard?.writeText(txt).catch(() => {});
+      alert("已复制家庭群报平安文案：
+" + txt);
+    }
+
+    function openBlindBox() {
+      drawBlindBoxQuote();
+      document.getElementById("blindbox-modal").classList.remove("hidden");
+    }
+
+    function drawBlindBoxQuote() {
+      const pick = BLIND_BOX_QUOTES[Math.floor(Math.random() * BLIND_BOX_QUOTES.length)];
+      document.getElementById("blindbox-quote").textContent = pick.q;
+      document.getElementById("blindbox-detail").textContent = pick.d;
+    }
+
+    function openTripProfileModal() {
+      document.getElementById("inp-captain").value = state.profile.captain || "";
+      document.getElementById("inp-dest").value = state.profile.dest || "";
+      document.getElementById("inp-car").value = state.profile.car || "";
+      document.getElementById("inp-ins").value = state.profile.ins || "";
+      document.getElementById("inp-fam").value = state.profile.fam || "";
+      document.getElementById("profile-modal").classList.remove("hidden");
+    }
+
+    function saveTripProfile() {
+      state.profile = {
+        captain: document.getElementById("inp-captain").value.trim() || "爸爸",
+        dest: document.getElementById("inp-dest").value.trim() || "全家团圆之旅",
+        car: document.getElementById("inp-car").value.trim(),
+        ins: document.getElementById("inp-ins").value.trim(),
+        fam: document.getElementById("inp-fam").value.trim()
+      };
+      persistState();
+      renderChecklist();
+      closeModal("profile-modal");
+    }
+
+    function openSosModal() {
+      const p = state.profile;
+      document.getElementById("sos-custom-contacts").innerHTML = `
+        <div class="font-bold mb-1">预存档案信息</div>
+        <div>车辆：${p.car || "未填写"}</div>
+        <div>车险电话：${p.ins ? `<a href="tel:${p.ins}" class="text-sky-700 font-black underline">${p.ins}</a>` : "未填写"}</div>
+        <div>家人电话：${p.fam ? `<a href="tel:${p.fam}" class="text-sky-700 font-black underline">${p.fam}</a>` : "未填写"}</div>
+      `;
+      document.getElementById("sos-modal").classList.remove("hidden");
+    }
+
+    function fetchGpsForSos() {
+      const el = document.getElementById("sos-loc-text");
+      if (!navigator.geolocation) {
+        el.textContent = "当前设备不支持定位接口";
+        return;
+      }
+      el.textContent = "正在定位中...";
+      navigator.geolocation.getCurrentPosition(pos => {
+        const lat = pos.coords.latitude.toFixed(6);
+        const lng = pos.coords.longitude.toFixed(6);
+        state.gpsText = `纬度 ${lat}, 经度 ${lng}`;
+        el.textContent = state.gpsText;
+      }, () => {
+        el.textContent = "定位失败，请手动查看地图或报出附近路牌/公里桩";
+      });
+    }
+
+    function copySosText() {
+      const txt = `紧急求助｜车辆：${state.profile.car || "未填"}｜位置：${state.gpsText || "待补充"}｜家人：${state.profile.fam || "未填"}`;
+      navigator.clipboard?.writeText(txt).catch(() => {});
+      alert("已复制救援信息：
+" + txt);
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.add("hidden");
+    }
+
+    loadState();
+    renderChecklist();
+  </script>
+</body>
+</html>
