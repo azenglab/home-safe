@@ -347,23 +347,25 @@
                     <i data-lucide="clipboard-check" class="w-3.5 h-3.5 shrink-0"></i>
                     <span id="progressLabel" class="truncate">完成出发前检查与副驾任务卡全部确认后生成通行证</span>
                 </span>
-                <div class="flex items-center gap-1.5 shrink-0" id="headerActions">
+                <div class="flex items-center gap-1.5 shrink-0">
                     <span id="progressCount" class="px-2 py-0.5 rounded-full bg-[var(--accent-soft)] text-[var(--accent-ink)] font-extrabold tabular-nums">0 / 6 已确认</span>
                     <!-- 未签发前：生成通行证（引导确认链） -->
-                    <button id="btnGeneratePass" onclick="handleGeneratePassClick()" class="px-2.5 py-0.5 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white font-black text-[11px] shadow-sm active:scale-95 transition-all">
+                    <button id="btnGeneratePass" onclick="handleGeneratePassClick()" class="px-2.5 py-0.5 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[11px] shadow-sm active:scale-95 transition-all">
                         生成通行证
                     </button>
-                    <!-- 通行证签发后：证书图标 + 查看通行证 -->
-                    <button id="btnViewPass" onclick="openBoardingPassModal()" class="hidden px-2.5 py-0.5 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white font-black text-[11px] shadow-sm active:scale-95 transition-all flex items-center gap-1">
-                        <i data-lucide="award" class="w-3.5 h-3.5"></i>
-                        <span>查看通行证</span>
-                    </button>
-                    <!-- 通行证签发后：机长知情卡快捷入口 -->
-                    <button id="btnViewAwareness" onclick="openAwarenessModal()" class="hidden px-2.5 py-0.5 rounded-full bg-indigo-600 hover:bg-indigo-700 text-white font-black text-[11px] shadow-sm active:scale-95 transition-all flex items-center gap-1">
-                        <i data-lucide="scroll-text" class="w-3.5 h-3.5"></i>
-                        <span>知情卡</span>
-                    </button>
                 </div>
+            </div>
+
+            <!-- 通行证签发后：单独一行放「查看通行证 + 知情卡」，避免被进度文案挤到屏幕外 -->
+            <div id="headerPassActions" class="hidden flex items-center gap-2 mt-2">
+                <button id="btnViewPass" onclick="openBoardingPassModal()" class="site-btn site-btn-primary site-btn-sm flex-1 sm:flex-none">
+                    <i data-lucide="award" class="w-3.5 h-3.5"></i>
+                    <span>查看通行证</span>
+                </button>
+                <button id="btnViewAwareness" onclick="openAwarenessModal()" class="site-btn site-btn-soft site-btn-sm flex-1 sm:flex-none">
+                    <i data-lucide="scroll-text" class="w-3.5 h-3.5"></i>
+                    <span>机长知情卡</span>
+                </button>
             </div>
             <div class="w-full h-1.5 mt-2 bg-[var(--paper-2)] rounded-full overflow-hidden">
                 <div id="progressBar" class="h-full bg-gradient-to-r from-orange-500 to-emerald-500 rounded-full transition-all duration-500 ease-out" style="width: 0%"></div>
@@ -1696,11 +1698,18 @@
             document.getElementById('progressCount').textContent = `${completed} / ${total} 已确认`;
             document.getElementById('progressBar').style.width = `${percent}%`;
 
-            // 通行证签发后，顶部按钮切换为【查看通行证 + 知情卡】
+            // 通行证签发后，顶部按钮切换为【查看通行证 + 知情卡】独立一行
             const unlocked = passUnlocked();
-            document.getElementById('btnGeneratePass').classList.toggle('hidden', unlocked);
-            document.getElementById('btnViewPass').classList.toggle('hidden', !unlocked);
-            document.getElementById('btnViewAwareness').classList.toggle('hidden', !unlocked);
+            const genBtn = document.getElementById('btnGeneratePass');
+            const passActions = document.getElementById('headerPassActions');
+            const labelEl = document.getElementById('progressLabel');
+            if (genBtn) genBtn.classList.toggle('hidden', unlocked);
+            if (passActions) passActions.classList.toggle('hidden', !unlocked);
+            if (labelEl) {
+                labelEl.textContent = unlocked
+                    ? '通行证已签发 · 可随时查看或签收知情卡'
+                    : '完成出发前检查与副驾任务卡全部确认后生成通行证';
+            }
         }
 
         function resetCurrentTab() {
