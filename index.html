@@ -9,9 +9,10 @@
   <meta property="og:type" content="website" />
   <meta property="og:title" content="家庭应急报警助手（SOS）｜呼救话术与家庭安全常识卡片" />
   <meta property="og:description" content="关键时刻不慌乱：一键呼救、结构化报警话术、家庭本地档案与卡通安全卡片，支持一键生成发往家庭群的分享海报。" />
-  <meta name="theme-color" content="#d92d20" />
-  <link rel="stylesheet" href="assets/site.css" />
-  <script src="assets/layout.js" data-page="home"></script>
+  <meta name="theme-color" content="#dc2626" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="assets/site.css?v=20261124" />
+  <script src="assets/layout.js?v=20261124" data-page="home"></script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -24,84 +25,101 @@
   </script>
   <style>
     :root {
-      --surface: #ffffff;
-      --surface-soft: #f2f4f7;
-      --text: #101828;
-      --muted: #475467;
-      --line: #e4e7ec;
-      --red: #d92d20;
-      --red-dark: #b42318;
-      --red-bg: #fef3f2;
-      --amber: #d97706;
+      /* 设计令牌统一由 assets/site.css 提供，这里只保留本页专用的语义色 */
+      --surface-soft: #fafaf9;
+      --text: var(--ink);
+      --muted: var(--ink-3);
+      --red: var(--accent);
+      --red-dark: var(--accent-ink);
+      --red-bg: var(--accent-soft);
+      --amber: #b45309;
       --amber-bg: #fffbeb;
-      --blue: #155eef;
-      --blue-bg: #eff4ff;
-      --green: #067647;
-      --green-bg: #ecfdf3;
-      --radius: 16px;
-      --shadow: 0 2px 10px rgba(16, 24, 40, 0.06);
+      --blue: #1d4ed8;
+      --blue-bg: #eff6ff;
+      --green: #047857;
+      --green-bg: #ecfdf5;
+      --shadow: var(--shadow-1);
     }
 
     * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
     body {
-      line-height: 1.5;
+      line-height: 1.62;
     }
 
-    .app-wrap {
+    .app-main {
       max-width: 56rem;
       margin: 0 auto;
-      padding: 12px 14px 24px;
+      padding: 12px 12px 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 13px;
     }
 
-    .topbar {
-      background: linear-gradient(135deg, #b42318 0%, #d92d20 60%, #ef4444 100%);
-      color: #fff;
-      border-radius: 18px;
-      padding: 14px 16px;
-      box-shadow: 0 6px 18px rgba(217, 45, 32, 0.22);
-      margin: 12px 0;
+    @media (min-width: 640px) {
+      .app-main { padding: 18px 16px 44px; gap: 16px; }
     }
 
-    .topbar-row {
+    /* 吸顶分页条向两侧出血，与页面同宽 */
+    .site-subbar.subbar-bleed {
+      margin-left: -12px;
+      margin-right: -12px;
+      padding-left: 12px;
+      padding-right: 12px;
+    }
+    /* 桌面端：收成一条浮动胶囊，避免和卡片宽度打架 */
+    @media (min-width: 640px) {
+      .site-subbar.subbar-bleed {
+        margin-left: 0;
+        margin-right: 0;
+        margin-top: -4px;
+        padding: 0.3rem 0.35rem;
+        border: 1px solid var(--line);
+        border-radius: var(--radius-pill);
+        background: rgba(251, 248, 243, 0.9);
+        top: 3.25rem;
+      }
+      .site-subbar.subbar-bleed .inner {
+        -webkit-mask-image: none;
+        mask-image: none;
+      }
+    }
+
+    @media (max-width: 430px) {
+      .site-subbar .inner .subbar-item {
+        padding: 0.3rem 0.52rem;
+        font-size: 0.72rem;
+      }
+    }
+
+    /* ---- 顶部提示条：安静的纸面提示，不再抢主视觉 ---- */
+    .notice-bar {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-left: 3px solid #d97706;
+      color: #78350f;
+      border-radius: 10px;
+      padding: 9px 11px;
+      font-size: 12px;
+      line-height: 1.55;
+    }
+    .notice-bar .mark {
+      flex: none;
+      width: 15px;
+      height: 15px;
+      margin-top: 1px;
+      border-radius: 50%;
+      background: #d97706;
+      color: #fffbeb;
+      font-size: 10px;
+      font-weight: 800;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-    }
-
-    .topbar h1 {
-      margin: 0;
-      font-size: 15px;
-      font-weight: 700;
-      letter-spacing: 0.2px;
-    }
-
-    .topbar-sub {
-      margin: 4px 0 0;
-      font-size: 10px;
-      opacity: 0.92;
-    }
-
-    .pill-badge {
-      background: rgba(255, 255, 255, 0.18);
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      color: #fff;
-      font-size: 10px;
-      padding: 4px 8px;
-      border-radius: 999px;
-      white-space: nowrap;
-      font-weight: 600;
-    }
-
-    .notice-bar {
-      background: var(--amber-bg);
-      border: 1px solid #fde68a;
-      color: #78350f;
-      border-radius: 12px;
-      padding: 9px 12px;
-      font-size: 12px;
-      margin-bottom: 12px;
+      justify-content: center;
+      line-height: 1;
     }
 
     .card {
@@ -109,14 +127,13 @@
       border: 1px solid var(--line);
       border-radius: var(--radius);
       padding: 14px;
-      box-shadow: var(--shadow);
-      margin-bottom: 12px;
+      box-shadow: var(--shadow-1);
     }
 
     .card-title {
       margin: 0 0 10px;
-      font-size: 15px;
-      font-weight: 700;
+      font-size: var(--fs-h2);
+      font-weight: 800;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -183,7 +200,7 @@
 
     .loc-box {
       background: var(--surface-soft);
-      border: 1px dashed #cbd5e1;
+      border: 1px dashed #d6d3d1;
       border-radius: 12px;
       padding: 11px 12px;
       font-size: 13px;
@@ -200,19 +217,21 @@
 
     .chip {
       border: 1px solid var(--line);
-      background: var(--surface-soft);
+      background: var(--surface);
       color: var(--text);
       padding: 7px 12px;
       border-radius: 999px;
       font-size: 13px;
       font-weight: 600;
       cursor: pointer;
+      transition: all 0.15s ease;
     }
 
     .chip.active {
       background: var(--red-bg);
       border-color: var(--red);
       color: var(--red-dark);
+      font-weight: 800;
     }
 
     .field-label {
@@ -228,7 +247,7 @@
     textarea,
     select {
       width: 100%;
-      border: 1px solid #d0d5dd;
+      border: 1px solid #d6d3d1;
       border-radius: 10px;
       padding: 9px 11px;
       font-size: 14px;
@@ -237,10 +256,16 @@
       font-family: inherit;
     }
 
+    input:focus, textarea:focus, select:focus {
+      outline: none;
+      border-color: var(--red);
+      box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.08);
+    }
+
     textarea { min-height: 76px; resize: vertical; }
 
     .script-box {
-      background: #fef3f2;
+      background: var(--red-bg);
       border: 1px solid #fecdca;
       border-radius: 12px;
       padding: 12px;
@@ -251,7 +276,7 @@
     }
 
     .sync-box {
-      background: #eff4ff;
+      background: var(--blue-bg);
       border: 1px solid #c7d7fe;
       border-radius: 12px;
       padding: 12px;
@@ -273,7 +298,7 @@
 
     .safety-card {
       background: var(--surface);
-      border: 1px solid var(--line);
+      border: 1px solid #ffedd5;
       border-radius: 16px;
       overflow: hidden;
       box-shadow: var(--shadow);
@@ -302,7 +327,7 @@
       margin-bottom: 6px;
     }
 
-    .safety-title { margin: 0 0 6px; font-size: 15px; font-weight: 700; }
+    .safety-title { margin: 0 0 6px; font-size: 15px; font-weight: 800; }
 
     .safety-slogan {
       background: #fff7ed;
@@ -327,46 +352,7 @@
     }
 
     .tab-panel { display: none; }
-    .tab-panel.active { display: block; }
-
-    .bottom-nav {
-      display: flex;
-      gap: 5px;
-      margin: 12px 0 4px;
-    }
-
-    .nav-btn {
-      flex: 1;
-      min-width: 0;
-      border: 1px solid var(--line);
-      background: var(--surface);
-      color: var(--muted);
-      font-size: 12px;
-      font-weight: 700;
-      padding: 7px 2px;
-      border-radius: 10px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 3px;
-      white-space: nowrap;
-      transition: all 0.15s ease;
-    }
-
-    .nav-btn span.ico { font-size: 14px; line-height: 1; }
-    .nav-btn:hover { border-color: var(--red); color: var(--red); }
-    .nav-btn.active {
-      color: #fff;
-      background: var(--red);
-      border-color: var(--red-dark);
-      box-shadow: 0 3px 10px rgba(217, 45, 32, 0.25);
-    }
-
-    @media (max-width: 360px) {
-      .nav-btn { font-size: 11px; padding: 6px 0; gap: 2px; }
-      .nav-btn span.ico { font-size: 13px; }
-    }
+    .tab-panel.active { display: flex; flex-direction: column; gap: 12px; }
 
     .modal-backdrop {
       position: fixed;
@@ -442,40 +428,36 @@
     }
   </style>
 </head>
-<body class="site">
+<body class="site text-slate-800 pb-10 min-h-screen overflow-x-hidden">
   <div id="site-header"></div>
 
-  <div class="app-wrap">
-    <header class="topbar">
-      <div class="topbar-row">
-        <h1>🚨 家庭应急报警助手（SOS）</h1>
-        <span class="pill-badge">离线可用 · 家庭版</span>
-      </div>
-      <p class="topbar-sub">一键呼救 · 结构化报警话术 · 家庭档案 · 安全常识卡片与群分享图</p>
-    </header>
+  <main class="app-main">
 
-    <!-- 场景切换标签（样式对齐出行清单页） -->
-    <nav class="bottom-nav" aria-label="主导航">
-      <button type="button" class="nav-btn active" data-tab="call">
-        <span class="ico">🚨</span>
-        <span>一键呼救</span>
-      </button>
-      <button type="button" class="nav-btn" data-tab="script">
-        <span class="ico">🗣️</span>
-        <span>报警话术</span>
-      </button>
-      <button type="button" class="nav-btn" data-tab="profile">
-        <span class="ico">📋</span>
-        <span>家庭档案</span>
-      </button>
-      <button type="button" class="nav-btn" data-tab="cards">
-        <span class="ico">🎨</span>
-        <span>常识卡片</span>
-      </button>
-    </nav>
+    <!-- 页面横幅 -->
+    <section class="site-hero">
+      <div class="site-hero-row">
+        <span class="site-hero-mark">🚨</span>
+        <div class="min-w-0 flex-1">
+          <h1>家庭应急报警助手</h1>
+          <p class="site-hero-sub">一键呼救 · 结构化报警话术 · 家庭档案 · 安全常识卡片</p>
+        </div>
+        <span class="site-hero-badge">离线可用</span>
+      </div>
+    </section>
+
+    <!-- 分页切换：吸顶细条 -->
+    <div class="site-subbar subbar-bleed">
+      <nav class="bottom-nav inner" aria-label="首页功能切换">
+        <button type="button" class="nav-btn subbar-item active" data-tab="call"><span class="ico">🚨</span>一键呼救</button>
+        <button type="button" class="nav-btn subbar-item" data-tab="script"><span class="ico">🗣️</span>报警话术</button>
+        <button type="button" class="nav-btn subbar-item" data-tab="profile"><span class="ico">📋</span>家庭档案</button>
+        <button type="button" class="nav-btn subbar-item" data-tab="cards"><span class="ico">🎨</span>常识卡片</button>
+      </nav>
+    </div>
 
     <div class="notice-bar">
-      ⚠️ <strong>紧急提示：</strong>遇火情、险情、突发疾病或治安事件，请<strong>第一时间直接拨打 119 / 110 / 120</strong>。本工具用于辅助报清位置、整理话术与生成家庭群安全卡片。
+      <span class="mark">!</span>
+      <p>遇火情、险情、突发疾病或治安事件，请<strong>第一时间直接拨打 119 / 110 / 120</strong>。本工具用于辅助报清位置、整理话术与生成家庭群安全卡片。</p>
     </div>
 
     <!-- 分页 1：一键呼救 -->
@@ -497,7 +479,6 @@
           </a>
         </div>
         <div class="copy-nums">
-         
           <button type="button" class="btn btn-sm btn-blue" data-goto-tab="script">去生成报警话术 →</button>
         </div>
       </div>
@@ -516,7 +497,7 @@
 
       <div class="card">
         <h2 class="card-title">🏠 预存家庭地址速报</h2>
-        <div id="home-quick-card" class="loc-box">暂无预存地址，请前往底部「家庭档案」填写保存。</div>
+        <div id="home-quick-card" class="loc-box">暂无预存地址，请前往「家庭档案」填写保存。</div>
       </div>
     </section>
 
@@ -609,7 +590,7 @@
         <p style="margin:0 0 10px;font-size:12px;color:var(--muted);">
           点击任意卡片上的<strong>「生成群分享图」</strong>，即可合成高清卡通安全海报，方便保存后发到家庭群。
         </p>
-        <div class="chip-group" id="card-filters">
+        <div class="chip-group" id="card-filters" style="margin-bottom:0;">
           <button type="button" class="chip active" data-cat="全部">全部 (8)</button>
           <button type="button" class="chip" data-cat="火灾逃生">火灾逃生 (4)</button>
           <button type="button" class="chip" data-cat="燃气用电">燃气用电 (1)</button>
@@ -618,7 +599,7 @@
       </div>
       <div id="cards-container" class="cards-grid"></div>
     </section>
-  </div>
+  </main>
 
   <div id="site-footer"></div>
 
@@ -811,7 +792,7 @@
             "<div><strong>地址：</strong>" + escapeHtml(state.profile.addr || "未填写") + "</div>" +
             (state.profile.gate ? "<div style='margin-top:4px;color:var(--muted);'><strong>入口指引：</strong>" + escapeHtml(state.profile.gate) + "</div>" : "");
         } else {
-          quickEl.textContent = "暂无预存地址，请前往底部「家庭档案」填写保存。";
+          quickEl.textContent = "暂无预存地址，请前往「家庭档案」填写保存。";
         }
 
         const listEl = document.getElementById("emergency-contacts-list");

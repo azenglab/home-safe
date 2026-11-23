@@ -5,39 +5,99 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>学生安全知识 · 全家平安守护中心</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="assets/site.css" />
+  <link rel="stylesheet" href="assets/site.css?v=20261124" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet" />
   <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    /* 吸顶快捷条：横向滑动，与全局导航拼接 */
+    .site-subbar.kids-nav {
+      margin: 0 -12px;
+      padding: 0.5rem 12px;
+      top: 3.25rem;
+    }
+    @media (min-width: 640px) {
+      .site-subbar.kids-nav {
+        margin: 0;
+        padding: 0.55rem 0.4rem;
+        border: 1px solid var(--line);
+        border-radius: var(--radius-pill);
+        background: rgba(251, 248, 243, 0.92);
+        top: 3.25rem;
+      }
+      .site-subbar.kids-nav .inner {
+        -webkit-mask-image: none;
+        mask-image: none;
+      }
+    }
+
+    /* 六大课堂：统一卡片外观 + 锚点预留吸顶高度 */
+    main section[id^="sec-"] {
+      scroll-margin-top: 7.5rem;
+      border: 1px solid var(--line);
+      border-radius: var(--radius) !important;
+      box-shadow: var(--shadow-1) !important;
+    }
+    main section[id^="sec-"] > h2 {
+      font-size: var(--fs-h2);
+      font-weight: 800;
+    }
+
+    /* 正文不再用超粗字重，长句更好读 */
+    main section[id^="sec-"] ul {
+      font-size: 0.8rem;
+      font-weight: 500 !important;
+      line-height: 1.72;
+    }
+    main section[id^="sec-"] ul b {
+      font-weight: 700;
+    }
+
+    /* 口诀条：由六种高饱和渐变收成同一种安静的批注样式 */
+    main section[id^="sec-"] > div[class*="bg-gradient-to-r"][class*="text-white"] {
+      background-image: none !important;
+      background-color: var(--accent-soft);
+      color: var(--accent-ink) !important;
+      border-left: 3px solid var(--accent);
+      border-radius: 10px;
+      text-align: left !important;
+      padding: 0.6rem 0.75rem !important;
+      font-weight: 700 !important;
+      letter-spacing: 0 !important;
+      box-shadow: none !important;
+    }
+  </style>
 </head>
-<body class="bg-slate-50 text-slate-800 font-sans">
+<body class="site min-h-[100dvh] flex flex-col overflow-x-hidden">
   <div id="site-header"></div>
 
-  <main class="max-w-4xl mx-auto px-3 sm:px-4 py-4 flex flex-col gap-4">
+  <main class="max-w-4xl mx-auto px-3 sm:px-4 py-4 flex flex-col gap-4 w-full flex-1">
 
-    <!-- 头部横幅 -->
-    <section class="bg-gradient-to-br from-emerald-500 via-teal-600 to-sky-600 rounded-2xl shadow-md px-5 py-6 text-white relative overflow-hidden">
-      <div class="relative z-10">
-        <div class="flex items-center gap-3">
-          <span class="text-3xl sm:text-4xl">🎒</span>
-          <div>
-            <h1 class="text-xl sm:text-2xl font-black">学生安全知识</h1>
-            <p class="text-xs sm:text-sm text-emerald-50/90 mt-0.5">从上学路上到放学回家 · 六大安全课堂，一次学会</p>
-          </div>
-        </div>
-        <div class="flex gap-1.5 mt-3 flex-wrap">
-          <span class="px-2 py-0.5 rounded-full bg-white/10 border border-white/15 text-[11px] font-bold text-amber-200">🎒 上学交通</span>
-          <span class="px-2 py-0.5 rounded-full bg-white/10 border border-white/15 text-[11px] font-bold text-lime-200">🏫 校园安全</span>
-          <span class="px-2 py-0.5 rounded-full bg-white/10 border border-white/15 text-[11px] font-bold text-sky-200">🌊 防溺水</span>
-          <span class="px-2 py-0.5 rounded-full bg-white/10 border border-white/15 text-[11px] font-bold text-rose-200">🔥 消防用电</span>
-          <span class="px-2 py-0.5 rounded-full bg-white/10 border border-white/15 text-[11px] font-bold text-violet-200">🌐 防拐防骗</span>
-          <span class="px-2 py-0.5 rounded-full bg-white/10 border border-white/15 text-[11px] font-bold text-orange-200">🩹 小伤自救</span>
+    <!-- 头部横幅（随页面滚动） -->
+    <section class="site-hero">
+      <div class="site-hero-row">
+        <span class="site-hero-mark">🎒</span>
+        <div class="min-w-0 flex-1">
+          <h1>学生安全知识</h1>
+          <p class="site-hero-sub">六大安全课堂，从上学路到放学回家</p>
         </div>
       </div>
     </section>
 
+    <!-- 六大课堂快捷跳转：吸顶细条 -->
+    <div class="site-subbar kids-nav">
+      <div class="inner">
+        <button onclick="scrollToSec('sec-traffic')" class="subbar-item">🎒 上学交通</button>
+        <button onclick="scrollToSec('sec-campus')" class="subbar-item">🏫 校园安全</button>
+        <button onclick="scrollToSec('sec-water')" class="subbar-item">🌊 防溺水</button>
+        <button onclick="scrollToSec('sec-fire')" class="subbar-item">🔥 消防用电</button>
+        <button onclick="scrollToSec('sec-net')" class="subbar-item">🌐 防拐防骗</button>
+        <button onclick="scrollToSec('sec-selfhelp')" class="subbar-item">🩹 小伤自救</button>
+      </div>
+    </div>
+
     <!-- 板块一：上学交通安全 -->
-    <section class="bg-white rounded-2xl shadow-md p-4 sm:p-5">
+    <section id="sec-traffic" class="scroll-mt-64 bg-white rounded-2xl shadow-md p-4 sm:p-5">
       <h2 class="text-base font-black text-slate-900 flex items-center gap-1.5 mb-1">
         <span>🎒</span> 上学交通安全
       </h2>
@@ -85,7 +145,7 @@
     </section>
 
     <!-- 板块二：校园安全 -->
-    <section class="bg-white rounded-2xl shadow-md p-4 sm:p-5">
+    <section id="sec-campus" class="scroll-mt-64 bg-white rounded-2xl shadow-md p-4 sm:p-5">
       <h2 class="text-base font-black text-slate-900 flex items-center gap-1.5 mb-1">
         <span>🏫</span> 校园内外安全
       </h2>
@@ -131,7 +191,7 @@
     </section>
 
     <!-- 板块三：防溺水专区 -->
-    <section class="bg-white rounded-2xl shadow-md p-4 sm:p-5 border-t-4 border-sky-400">
+    <section id="sec-water" class="scroll-mt-64 bg-white rounded-2xl shadow-md p-4 sm:p-5 border-t-4 border-sky-400">
       <h2 class="text-base font-black text-slate-900 flex items-center gap-1.5 mb-1">
         <span>🌊</span> 防溺水专区
       </h2>
@@ -166,7 +226,7 @@
     </section>
 
     <!-- 板块四：消防与用电 -->
-    <section class="bg-white rounded-2xl shadow-md p-4 sm:p-5">
+    <section id="sec-fire" class="scroll-mt-64 bg-white rounded-2xl shadow-md p-4 sm:p-5">
       <h2 class="text-base font-black text-slate-900 flex items-center gap-1.5 mb-1">
         <span>🔥</span> 消防与用电安全
       </h2>
@@ -198,7 +258,7 @@
     </section>
 
     <!-- 板块五：防拐防骗与网络安全 -->
-    <section class="bg-white rounded-2xl shadow-md p-4 sm:p-5">
+    <section id="sec-net" class="scroll-mt-64 bg-white rounded-2xl shadow-md p-4 sm:p-5">
       <h2 class="text-base font-black text-slate-900 flex items-center gap-1.5 mb-1">
         <span>🌐</span> 防拐防骗与网络安全
       </h2>
@@ -229,7 +289,7 @@
     </section>
 
     <!-- 板块六：小伤自救 -->
-    <section class="bg-white rounded-2xl shadow-md p-4 sm:p-5">
+    <section id="sec-selfhelp" class="scroll-mt-64 bg-white rounded-2xl shadow-md p-4 sm:p-5">
       <h2 class="text-base font-black text-slate-900 flex items-center gap-1.5 mb-1">
         <span>🩹</span> 常见小伤自救
       </h2>
@@ -259,9 +319,15 @@
   </main>
 
   <div id="site-footer"></div>
-  <script src="assets/layout.js" data-page="kids"></script>
+  <script src="assets/layout.js?v=20261124" data-page="kids"></script>
   <script>
     lucide.createIcons();
+
+    // 横幅标签跳转：平滑滚动到对应板块（scroll-mt-64 预留吸顶导航 + 横幅高度）
+    function scrollToSec(id) {
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
   </script>
 </body>
 </html>

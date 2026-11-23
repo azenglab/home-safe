@@ -21,16 +21,18 @@
 
   var HEADER_HTML =
     '<header class="site-header"><div class="site-shell bar">' +
-      '<a class="site-brand" href="index.html">' +
+      '<a class="site-brand" href="index.html" aria-label="全家平安守护中心 · 首页">' +
         '<span class="site-logo"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="lucide lucide-siren"><path d="M7 18v-6a5 5 0 1 1 10 0v6"></path><path d="M5 21a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-1a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2z"></path><path d="M21 12h1"></path><path d="M18.5 4.5 18 5"></path><path d="M2 12h1"></path><path d="M12 2v1"></path><path d="m4.929 4.929.707.707"></path><path d="M12 12v6"></path></svg></span>' +
-        // '<span class="site-brand-text">' +
-        //   '<span class="site-name">全家平安守护中心</span>' +
-        //   '<span class="site-sub">家庭应急 · 出行检查 · 儿童安全</span>' +
-        // '</span>' +
+        '<span class="site-brand-text">' +
+          '<span class="site-name">全家平安守护中心</span>' +
+          '<span class="site-sub">家庭应急 · 出行检查 · 儿童安全</span>' +
+        '</span>' +
       '</a>' +
-      '<nav class="site-nav">' +
+      '<nav class="site-nav" aria-label="站点导航">' +
         NAV.map(function (n) {
-          return '<a href="' + n.href + '"' + (n.id === page ? ' class="active"' : '') + '>' + n.label + '</a>';
+          var on = n.id === page;
+          return '<a href="' + n.href + '"' +
+            (on ? ' class="active" aria-current="page"' : '') + '>' + n.label + '</a>';
         }).join('') +
       '</nav>' +
     '</div></header>';
@@ -52,6 +54,8 @@
     if (h) h.outerHTML = HEADER_HTML;
     // FOOTER_HTML 已注释停用：直接移除页脚占位符
     if (f) f.outerHTML = '';
+    // 把当前页写入 body，供 site.css 决定模块强调色
+    if (page && document.body) document.body.classList.add('page-' + page);
   }
 
   if (document.readyState === 'loading') {
