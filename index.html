@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>全家平安守护中心 · 出行清单 · 儿童乐园 · 家庭应急</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;600;700;900&display=swap');
+    body {
+      font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+      background:
+        radial-gradient(circle at 15% 10%, #fef3c7 0%, transparent 45%),
+        radial-gradient(circle at 85% 15%, #dcfce7 0%, transparent 42%),
+        linear-gradient(180deg, #fffdf7 0%, #f8fafc 100%);
+      color: #0f172a;
+      overflow-x: hidden;
+    }
+    .portal-card {
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+    }
+    .portal-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 14px 28px -10px rgba(15, 23, 42, 0.14);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between">
+  <div class="max-w-4xl w-full mx-auto px-4 pt-6 pb-8 space-y-5">
+    <!-- 顶部统一视觉品牌横幅 -->
+    <header class="bg-white/95 rounded-3xl p-5 sm:p-6 border border-amber-200/80 shadow-sm">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div class="flex items-start sm:items-center gap-3.5">
+          <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-400 via-orange-500 to-rose-500 text-white flex items-center justify-center text-2xl font-black shadow-md shrink-0">
+            🏡
+          </div>
+          <div>
+            <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-900 text-xs font-black mb-1">
+              <span>全家安全工具箱</span>
+              <span>·</span>
+              <span>同级多页协同</span>
+            </div>
+            <h1 class="text-2xl sm:text-3xl font-black tracking-tight text-slate-900">全家平安守护中心</h1>
+            <p class="text-xs sm:text-sm text-slate-600 mt-1">
+              覆盖自驾出发前仪式感检查、儿童趣味安全互动与家庭突发应急报警三大场景
+            </p>
+          </div>
+        </div>
+
+        <!-- 快捷紧急号码条（不溢出、紧凑排列） -->
+        <div class="flex flex-wrap items-center gap-1.5 text-xs font-black shrink-0">
+          <a href="tel:12122" class="px-3 py-2 rounded-xl bg-rose-50 text-rose-700 border border-rose-200 hover:bg-rose-100">高速 12122</a>
+          <a href="tel:119" class="px-3 py-2 rounded-xl bg-orange-50 text-orange-800 border border-orange-200 hover:bg-orange-100">火警 119</a>
+          <a href="tel:120" class="px-3 py-2 rounded-xl bg-emerald-50 text-emerald-800 border border-emerald-200 hover:bg-emerald-100">急救 120</a>
+        </div>
+      </div>
+    </header>
+
+    <!-- 三大核心页面跳转卡片 -->
+    <main class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <!-- 卡片 1：家庭平安出行清单 -->
+      <a href="family-trip.html" class="portal-card bg-white rounded-3xl p-5 border-2 border-amber-200 flex flex-col justify-between shadow-sm">
+        <div>
+          <div class="flex items-center justify-between mb-3">
+            <span class="w-12 h-12 rounded-2xl bg-amber-100 text-amber-800 flex items-center justify-center text-2xl">✈️</span>
+            <span class="text-xs font-black px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 border border-amber-200">自驾出行</span>
+          </div>
+          <h2 class="text-lg font-black text-slate-900">家庭平安出行检查单</h2>
+          <p class="text-xs sm:text-sm text-slate-600 mt-1.5 leading-relaxed">
+            副驾领读、机长确认，支持出发前/高速/途中休整场景、语音朗读、长辈大字模式与出发通行证海报。
+          </p>
+        </div>
+        <div class="mt-5 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-black text-amber-700">
+          <span>进入出行检查单</span>
+          <span>打开页面 →</span>
+        </div>
+      </a>
+
+      <!-- 卡片 2：安全小卫士乐园 -->
+      <a href="kids-guardian.html" class="portal-card bg-white rounded-3xl p-5 border-2 border-emerald-200 flex flex-col justify-between shadow-sm">
+        <div>
+          <div class="flex items-center justify-between mb-3">
+            <span class="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-800 flex items-center justify-center text-2xl">🛡️</span>
+            <span class="text-xs font-black px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">儿童互动</span>
+          </div>
+          <h2 class="text-lg font-black text-slate-900">安全小卫士乐园</h2>
+          <p class="text-xs sm:text-sm text-slate-600 mt-1.5 leading-relaxed">
+            面向孩子的趣味安全实验室：拖拽体验汽车盲区与司机视角、交通标志大闯关、模拟拨号与校园找茬。
+          </p>
+        </div>
+        <div class="mt-5 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-black text-emerald-700">
+          <span>进入儿童安全乐园</span>
+          <span>打开页面 →</span>
+        </div>
+      </a>
+
+      <!-- 卡片 3：家庭应急报警助手 -->
+      <a href="home-sos.html" class="portal-card bg-white rounded-3xl p-5 border-2 border-rose-200 flex flex-col justify-between shadow-sm">
+        <div>
+          <div class="flex items-center justify-between mb-3">
+            <span class="w-12 h-12 rounded-2xl bg-rose-100 text-rose-800 flex items-center justify-center text-2xl">🚨</span>
+            <span class="text-xs font-black px-2.5 py-1 rounded-full bg-rose-50 text-rose-700 border border-rose-200">家庭急救</span>
+          </div>
+          <h2 class="text-lg font-black text-slate-900">家庭应急报警助手（SOS）</h2>
+          <p class="text-xs sm:text-sm text-slate-600 mt-1.5 leading-relaxed">
+            119/110/120 快捷呼救、GPS 定位抓取、结构化报警话术与家人同步简报、本地家庭档案及常识海报。
+          </p>
+        </div>
+        <div class="mt-5 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-black text-rose-700">
+          <span>进入家庭应急助手</span>
+          <span>打开页面 →</span>
+        </div>
+      </a>
+    </main>
+
+    <!-- 家庭使用建议条 -->
+    <footer class="bg-white/90 rounded-2xl px-4 py-3 border border-slate-200 text-xs text-slate-600 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
+      <span>💡 建议将 <strong>index.html</strong> 放入同一目录并添加至手机主屏幕，方便节假日出行与家庭日常随时打开。</span>
+      <span class="font-bold text-slate-500">本地存储 · 无需复杂配置</span>
+    </footer>
+  </div>
+</body>
+</html>
