@@ -469,6 +469,17 @@ body.site ::-webkit-scrollbar-track { background: transparent; }
 }
 .site-subbar .inner::-webkit-scrollbar { display: none; }
 
+/* 手机端：快捷条换行成两行显示，不再左右滚动 */
+@media (max-width: 639px) {
+  .site-subbar .inner {
+    flex-wrap: wrap;
+    overflow: visible;
+    row-gap: 0.4rem;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+}
+
 .site-subbar .site-chip,
 .site-subbar .subbar-item {
   flex: none;
@@ -493,6 +504,15 @@ body.site ::-webkit-scrollbar-track { background: transparent; }
   border-color: var(--accent);
   color: #fff;
   box-shadow: 0 2px 8px -3px color-mix(in srgb, var(--accent) 60%, transparent);
+}
+
+/* 手机端：缩小胶囊内边距，让两行排布更紧凑（放在基础样式之后覆盖） */
+@media (max-width: 639px) {
+  .site-subbar .site-chip,
+  .site-subbar .subbar-item {
+    padding: 0.3rem 0.56rem;
+    font-size: 0.72rem;
+  }
 }
 
 /* ---------------- 页脚 ---------------- */

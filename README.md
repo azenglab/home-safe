@@ -41,7 +41,7 @@
 
 **通用组件**：`.site-hero`、`.site-card`、`.site-btn`、`.site-chip`、`.site-sec-title`、`.site-subbar`，颜色与圆角全部走令牌。
 
-改动样式后请给 `site.css` / `layout.js` 的引用加版本号（如 `?v=20261124`），避免浏览器命中旧缓存导致破版。
+改动样式后请给 `site.css` / `layout.js` 的引用加版本号（如 `?v=20261125`），避免浏览器命中旧缓存导致破版。
 
 ## 特性
 

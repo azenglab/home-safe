@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>学生安全知识 · 全家平安守护中心</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="assets/site.css?v=20261124" />
+  <link rel="stylesheet" href="assets/site.css?v=20261125" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet" />
   <script src="https://unpkg.com/lucide@latest"></script>
@@ -37,6 +37,10 @@
       border: 1px solid var(--line);
       border-radius: var(--radius) !important;
       box-shadow: var(--shadow-1) !important;
+    }
+    /* 手机端快捷条为两行，锚点再多留一点 */
+    @media (max-width: 639px) {
+      main section[id^="sec-"] { scroll-margin-top: 9.5rem; }
     }
     main section[id^="sec-"] > h2 {
       font-size: var(--fs-h2);
@@ -319,7 +323,7 @@
   </main>
 
   <div id="site-footer"></div>
-  <script src="assets/layout.js?v=20261124" data-page="kids"></script>
+  <script src="assets/layout.js?v=20261125" data-page="kids"></script>
   <script>
     lucide.createIcons();
 
